@@ -1,0 +1,49 @@
+class {{ js_class_name }} extends OviPage {
+
+    // ── State ─────────────────────────────────────────────────────────────────
+    oviTable = null;
+
+    // ── Bootstrap ─────────────────────────────────────────────────────────────
+    init() {
+        super.init();
+        this.initTable();
+    }
+
+    // ── Table ─────────────────────────────────────────────────────────────────
+
+    initTable() {
+        this.oviTable = new OviTable().init({
+            rootEl: this.element,
+            tableSelector: '[data-ovi-table="{{ table_id }}"]',
+            formSelector: '[data-ovi-table-filters="{{ table_id }}"]',
+            columns: this.getColumns(),
+            tableConfig: {
+                orderBy: [['Id', 'desc']],
+            },
+            datatablesConfig: {
+                pageLength: 20,
+                scrollY: 'calc(100vh - 400px)',
+            },
+            onLoaded: () => this.onTableLoaded(),
+        });
+    }
+
+    getColumns() {
+        return [
+            {
+                name: 'Id',
+                title: 'ID',
+                orderable: true,
+                render: (data) => data ?? '—',
+            },
+        ];
+    }
+
+    onTableLoaded() {
+        // TODO: post-load logic (tooltips, event delegation, etc.)
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    new {{ js_class_name }}().init();
+});

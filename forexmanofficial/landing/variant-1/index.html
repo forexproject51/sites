@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Join 40,000+ traders. Free Forex signals, copy trading, and education on Telegram. 87%+ verified win rate.">
+  <title>Forexman — Free Signals. Real Results.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========================================
+       RESET & BASE
+    ======================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    ul { list-style: none; }
+
+    /* ========================================
+       CSS CUSTOM PROPERTIES
+    ======================================== */
+    :root {
+      /* Backgrounds */
+      --bg-deep:       #070b11;
+      --bg-base:       #0c1018;
+      --bg-elevated:   #111827;
+      --bg-surface:    rgba(255, 255, 255, 0.04);
+      --bg-surface-hover: rgba(255, 255, 255, 0.07);
+
+      /* Accent */
+      --accent-teal:        #0abfbc;
+      --accent-teal-bright: #00e5cc;
+      --accent-gold:        #d4a853;
+      --accent-gold-muted:  #a8882f;
+
+      /* Text */
+      --text-primary:   #ffffff;
+      --text-secondary: #94a3b8;
+      --text-muted:     #64748b;
+      --text-accent:    #0abfbc;
+
+      /* Borders & Effects */
+      --border-glass:       rgba(255, 255, 255, 0.08);
+      --border-glass-hover: rgba(255, 255, 255, 0.15);
+      --glow-teal: 0 0 30px rgba(10, 191, 188, 0.15);
+      --glow-gold: 0 0 20px rgba(212, 168, 83, 0.1);
+
+      /* Gradients */
+      --gradient-btn:  linear-gradient(135deg, #0abfbc, #08a8a6);
+      --gradient-gold: linear-gradient(135deg, #d4a853, #c9952b);
+
+      /* Spacing */
+      --space-1:  4px;
+      --space-2:  8px;
+      --space-3:  12px;
+      --space-4:  16px;
+      --space-6:  24px;
+      --space-8:  32px;
+      --space-12: 48px;
+      --space-16: 64px;
+      --space-20: 80px;
+      --space-24: 96px;
+      --space-30: 120px;
+
+      /* Border radius */
+      --radius-sm:   8px;
+      --radius-md:   12px;
+      --radius-lg:   16px;
+      --radius-xl:   20px;
+      --radius-full: 100px;
+
+      /* Max content width */
+      --max-w: 1200px;
+    }
+
+    /* ========================================
+       TYPOGRAPHY
+    ======================================== */
+    h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.15; }
+    .hero-headline {
+      font-size: clamp(36px, 8vw, 62px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+    .section-headline {
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+    }
+    .subheadline {
+      font-size: clamp(16px, 2.5vw, 20px);
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .stat-number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(34px, 6vw, 52px);
+      letter-spacing: -0.02em;
+      color: var(--accent-teal);
+    }
+    .stat-label {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ========================================
+       LAYOUT UTILITIES
+    ======================================== */
+    .container {
+      width: 100%;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--space-4);
+    }
+    @media (min-width: 640px) { .container { padding: 0 var(--space-8); } }
+    @media (min-width: 1024px) { .container { padding: 0 var(--space-12); } }
+
+    .section {
+      padding: var(--space-16) 0;
+    }
+    @media (min-width: 1024px) { .section { padding: var(--space-24) 0; } }
+
+    .section-bg-base { background: var(--bg-base); }
+    .section-bg-deep { background: var(--bg-deep); }
+
+    /* ========================================
+       GLASS CARD COMPONENT
+    ======================================== */
+    .glass-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .glass-card:hover {
+      border-color: var(--border-glass-hover);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), var(--glow-teal);
+      transform: translateY(-2px) scale(1.01);
+    }
+
+    /* ========================================
+       BUTTON COMPONENTS
+    ======================================== */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      background: var(--gradient-btn);
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 16px 32px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 20px rgba(10, 191, 188, 0.3);
+      transition: filter 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 6px 30px rgba(10, 191, 188, 0.45);
+    }
+    .btn-primary:active { transform: scale(0.97); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      background: transparent;
+      border: 1px solid rgba(10, 191, 188, 0.4);
+      color: var(--accent-teal);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 13px 28px;
+      border-radius: var(--radius-md);
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .btn-secondary:hover {
+      background: rgba(10, 191, 188, 0.1);
+      border-color: var(--accent-teal);
+    }
+
+    .btn-full { width: 100%; }
+
+    /* ========================================
+       BADGE COMPONENT
+    ======================================== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      background: rgba(10, 191, 188, 0.1);
+      color: var(--accent-teal);
+      border: 1px solid rgba(10, 191, 188, 0.2);
+      border-radius: var(--radius-full);
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .badge-gold {
+      background: rgba(212, 168, 83, 0.12);
+      color: var(--accent-gold);
+      border-color: rgba(212, 168, 83, 0.25);
+    }
+
+    /* ========================================
+       SECTION DIVIDER
+    ======================================== */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(10, 191, 188, 0.3), transparent);
+      margin: 0;
+    }
+
+    /* ========================================
+       SCROLL PROGRESS BAR
+    ======================================== */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: var(--gradient-btn);
+      z-index: 1000;
+      transition: width 0.1s linear;
+    }
+
+    /* ========================================
+       STICKY MINI CTA BAR
+    ======================================== */
+    #sticky-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      background: rgba(7, 11, 17, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-glass);
+      padding: 10px var(--space-4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      transform: translateY(-100%);
+      transition: transform 0.35s ease;
+    }
+    #sticky-bar.visible { transform: translateY(0); }
+    .sticky-logo { height: 28px; width: auto; }
+    .sticky-logo-text {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text-primary);
+    }
+    .sticky-bar-left { display: flex; align-items: center; gap: var(--space-2); }
+    .sticky-bar-btn {
+      font-size: 13px;
+      padding: 8px 16px;
+      white-space: nowrap;
+    }
+
+    /* ========================================
+       LIVE PULSE INDICATOR
+    ======================================== */
+    .live-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-teal);
+      animation: pulse-live 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse-live {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(10, 191, 188, 0.4); }
+      50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(10, 191, 188, 0); }
+    }
+
+    /* ========================================
+       REVEAL ANIMATION CLASSES
+    ======================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ========================================
+       SECTION: HERO
+    ======================================== */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--space-24) var(--space-4) var(--space-16);
+      overflow: hidden;
+    }
+
+    /* Background layers */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(10, 191, 188, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 70%, rgba(10, 191, 188, 0.04) 0%, transparent 50%),
+        var(--bg-deep);
+      z-index: 0;
+    }
+    /* Subtle dot grid */
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      width: 100%;
+    }
+
+    .hero-logo-wrap {
+      margin-bottom: var(--space-6);
+      opacity: 0;
+      animation: hero-fade-up 0.6s ease-out 0.1s forwards;
+    }
+    .hero-logo {
+      height: 72px;
+      width: auto;
+      margin: 0 auto;
+    }
+    .hero-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      justify-content: center;
+      margin-bottom: var(--space-4);
+      opacity: 0;
+      animation: hero-fade-up 0.6s ease-out 0.3s forwards;
+    }
+    .hero-headline {
+      margin-bottom: var(--space-4);
+      opacity: 0;
+      animation: hero-fade-up 0.6s ease-out 0.4s forwards;
+    }
+    .hero-headline .highlight { color: var(--accent-teal); }
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: var(--text-secondary);
+      font-weight: 400;
+      max-width: 560px;
+      margin: 0 auto var(--space-8);
+      opacity: 0;
+      animation: hero-fade-up 0.6s ease-out 0.55s forwards;
+    }
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      align-items: center;
+      opacity: 0;
+      animation: hero-fade-up 0.6s ease-out 0.7s forwards;
+    }
+    @media (min-width: 480px) {
+      .hero-cta-group { flex-direction: row; justify-content: center; }
+    }
+    .hero-cta-group .btn-primary { font-size: 17px; padding: 18px 36px; }
+    .hero-note {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: var(--space-4);
+      opacity: 0;
+      animation: hero-fade-up 0.6s ease-out 0.85s forwards;
+    }
+
+    /* Floating stat badges */
+    .hero-stat-float {
+      position: absolute;
+      z-index: 1;
+      opacity: 0;
+      animation: hero-float-in 0.7s ease-out forwards;
+    }
+    .hero-stat-float:nth-child(1) { top: 22%; left: 4%; animation-delay: 1s; }
+    .hero-stat-float:nth-child(2) { top: 22%; right: 4%; animation-delay: 1.15s; }
+    .hero-stat-float:nth-child(3) { bottom: 18%; left: 6%; animation-delay: 1.3s; }
+    @media (max-width: 900px) { .hero-stat-float { display: none; } }
+
+    .float-badge {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 12px 16px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      text-align: center;
+      min-width: 130px;
+    }
+    .float-badge-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent-teal);
+      display: block;
+    }
+    .float-badge-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    @keyframes hero-fade-up {
+      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(16px); }
+    }
+    @keyframes hero-float-in {
+      to { opacity: 1; transform: translateY(0) scale(1); }
+      from { opacity: 0; transform: translateY(12px) scale(0.95); }
+    }
+
+    /* Subtle ambient motion */
+    #hero-glow {
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(10, 191, 188, 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 0;
+      animation: glow-drift 30s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes glow-drift {
+      0%   { transform: translateX(-50%) translateY(0); }
+      50%  { transform: translateX(-45%) translateY(-40px); }
+      100% { transform: translateX(-55%) translateY(20px); }
+    }
+
+    /* ========================================
+       SECTION: STATS BAR
+    ======================================== */
+    #stats {
+      position: relative;
+      background: var(--bg-base);
+      padding: var(--space-16) 0;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-3);
+    }
+    @media (min-width: 640px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1024px) { .stats-grid { grid-template-columns: repeat(6, 1fr); gap: var(--space-4); } }
+
+    .stat-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--space-1);
+      padding: var(--space-6) var(--space-4);
+    }
+    .stat-card .live-dot { margin-bottom: var(--space-1); }
+    .stat-card-suffix {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      color: var(--accent-teal);
+    }
+
+    .stats-cta-row {
+      margin-top: var(--space-12);
+      text-align: center;
+    }
+
+    /* ========================================
+       SECTION: FEATURES
+    ======================================== */
+    #features { background: var(--bg-deep); }
+    .section-header { margin-bottom: var(--space-12); }
+    .section-header .section-headline { margin-bottom: var(--space-3); }
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+    @media (min-width: 640px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .features-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .feature-card { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-8); }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      color: var(--accent-teal);
+      flex-shrink: 0;
+    }
+    .feature-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .feature-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+    .features-cta-row { margin-top: var(--space-12); text-align: center; }
+
+    /* ========================================
+       SECTION: SIGNAL PERFORMANCE
+    ======================================== */
+    #performance { background: var(--bg-base); }
+    .performance-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+      align-items: center;
+    }
+    @media (min-width: 1024px) { .performance-layout { grid-template-columns: 1fr 1fr; } }
+
+    .performance-metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+    .perf-card { padding: var(--space-6); }
+    .perf-pair {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--space-2);
+    }
+    .perf-pips {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      color: var(--accent-teal);
+      line-height: 1;
+    }
+    .perf-period {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: var(--space-1);
+    }
+
+    .performance-visual {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+    .perf-highlight-card { padding: var(--space-8); }
+    .win-rate-wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+    .win-rate-circle {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .win-rate-circle svg {
+      width: 80px;
+      height: 80px;
+      transform: rotate(-90deg);
+    }
+    .win-rate-circle .circle-bg {
+      fill: none;
+      stroke: rgba(255,255,255,0.06);
+      stroke-width: 7;
+    }
+    .win-rate-circle .circle-fill {
+      fill: none;
+      stroke: var(--accent-teal);
+      stroke-width: 7;
+      stroke-linecap: round;
+      stroke-dasharray: 220;
+      stroke-dashoffset: 28.6; /* 87% fill: 220*(1-0.87)=28.6 */
+      filter: drop-shadow(0 0 6px rgba(10, 191, 188, 0.5));
+    }
+    .win-rate-text-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .win-rate-pct {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent-teal);
+      transform: rotate(90deg); /* counteract the SVG rotation */
+    }
+    .win-rate-info h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .win-rate-info p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+    /* Mini chart decoration */
+    .chart-decoration {
+      height: 60px;
+      position: relative;
+      overflow: hidden;
+      opacity: 0.25;
+    }
+    .chart-decoration svg { width: 100%; height: 100%; }
+
+    .signal-stats-row {
+      display: flex;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+    .signal-stat { display: flex; flex-direction: column; gap: 4px; }
+    .signal-stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent-teal);
+    }
+    .signal-stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .performance-cta-row { margin-top: var(--space-12); text-align: center; }
+
+    /* ========================================
+       SECTION: VIP ROOM
+    ======================================== */
+    #vip { background: var(--bg-deep); }
+    .vip-container {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .vip-card { padding: clamp(var(--space-8), 5vw, var(--space-12)); }
+    .vip-top {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-8);
+    }
+    .vip-badges { display: flex; flex-direction: column; gap: var(--space-2); }
+    .vip-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+    .vip-title span { background: var(--gradient-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .vip-sub { font-size: 16px; color: var(--text-secondary); }
+
+    .vip-checklists {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+      margin-bottom: var(--space-8);
+    }
+    @media (min-width: 640px) { .vip-checklists { grid-template-columns: 1fr 1fr; gap: var(--space-6); } }
+
+    .checklist-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--space-4);
+    }
+    .checklist { display: flex; flex-direction: column; gap: var(--space-3); }
+    .check-item { display: flex; align-items: flex-start; gap: var(--space-3); }
+    .check-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(10, 191, 188, 0.15);
+      border: 1px solid rgba(10, 191, 188, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .check-icon svg { width: 10px; height: 10px; color: var(--accent-teal); }
+    .cross-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .cross-icon svg { width: 10px; height: 10px; color: rgba(239, 68, 68, 0.7); }
+    .check-text { font-size: 15px; color: var(--text-primary); }
+    .cross-text { font-size: 15px; color: var(--text-muted); }
+
+    .vip-ask {
+      background: rgba(10, 191, 188, 0.05);
+      border: 1px solid rgba(10, 191, 188, 0.12);
+      border-radius: var(--radius-md);
+      padding: var(--space-4) var(--space-6);
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-8);
+      line-height: 1.7;
+    }
+    .vip-ask strong { color: var(--text-primary); }
+
+    .vip-cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      align-items: stretch;
+    }
+    @media (min-width: 480px) {
+      .vip-cta-group { flex-direction: row; align-items: center; }
+      .vip-cta-group .btn-primary { flex: 1; }
+    }
+
+    .vip-how-to {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: var(--space-4);
+      text-align: center;
+    }
+    .vip-how-to span { color: var(--accent-teal); font-weight: 500; }
+
+    /* ========================================
+       SECTION: EDUCATION
+    ======================================== */
+    #education { background: var(--bg-base); }
+    .education-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      margin-top: var(--space-8);
+    }
+    @media (min-width: 640px) { .education-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .edu-card { padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-4); }
+    .edu-emoji { font-size: 32px; line-height: 1; }
+    .edu-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .edu-topics { display: flex; flex-direction: column; gap: var(--space-2); }
+    .edu-topic {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .edu-topic::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent-teal);
+      flex-shrink: 0;
+    }
+    .education-footer {
+      margin-top: var(--space-12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-4);
+      text-align: center;
+    }
+    .edu-note { font-size: 15px; color: var(--text-secondary); }
+    .edu-note span { color: var(--accent-teal); font-weight: 500; }
+
+    /* ========================================
+       SECTION: COPY TRADING
+    ======================================== */
+    #copy-trading { background: var(--bg-deep); }
+    .copy-layout {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .copy-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: var(--space-8) 0;
+    }
+    .copy-step {
+      display: flex;
+      gap: var(--space-4);
+      position: relative;
+    }
+    .copy-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 23px;
+      top: 56px;
+      width: 2px;
+      height: calc(100% - 32px);
+      background: linear-gradient(180deg, rgba(10, 191, 188, 0.3), rgba(10, 191, 188, 0.05));
+    }
+    .copy-step-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(10, 191, 188, 0.12);
+      border: 1px solid rgba(10, 191, 188, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent-teal);
+    }
+    .copy-step-content {
+      padding: var(--space-3) 0 var(--space-8);
+      flex: 1;
+    }
+    .copy-step-content:last-child { padding-bottom: 0; }
+    .copy-step-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+    .copy-step-desc { font-size: 14px; color: var(--text-secondary); }
+
+    .copy-tagline {
+      text-align: center;
+      font-size: 16px;
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-bottom: var(--space-8);
+    }
+    .copy-tagline strong { color: var(--text-primary); font-style: normal; }
+
+    .copy-cta-row { text-align: center; }
+
+    /* ========================================
+       SECTION: ABOUT
+    ======================================== */
+    #about { background: var(--bg-base); }
+    .about-card {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: var(--space-8) clamp(var(--space-6), 5vw, var(--space-12));
+    }
+    .about-inner {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+    @media (min-width: 768px) {
+      .about-inner { flex-direction: row; align-items: flex-start; gap: var(--space-8); }
+    }
+
+    .about-brand-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--radius-lg);
+      background: rgba(10, 191, 188, 0.08);
+      border: 1px solid rgba(10, 191, 188, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .about-brand-icon img { width: 48px; height: 48px; object-fit: contain; }
+
+    .about-text h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--space-3);
+    }
+    .about-text p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: var(--space-6);
+    }
+    .about-values {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+    .about-value {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-full);
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* ========================================
+       SECTION: DISCLAIMER
+    ======================================== */
+    #disclaimer { background: var(--bg-deep); }
+    .disclaimer-card {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: var(--space-8);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius-lg);
+    }
+    .disclaimer-warning {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-4);
+    }
+    .disclaimer-warning-icon { font-size: 18px; }
+    .disclaimer-warning-text {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(239, 180, 68, 0.8);
+    }
+    .disclaimer-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .disclaimer-text + .disclaimer-text { margin-top: var(--space-3); }
+    .disclaimer-text strong { color: rgba(255,255,255,0.45); }
+
+    /* ========================================
+       SECTION: FOOTER CTA
+    ======================================== */
+    #footer-cta {
+      position: relative;
+      background: var(--bg-base);
+      padding: var(--space-20) 0;
+      overflow: hidden;
+      text-align: center;
+    }
+    #footer-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(10, 191, 188, 0.07) 0%, transparent 60%);
+      z-index: 0;
+    }
+    .footer-content { position: relative; z-index: 1; }
+    .footer-logo-wrap { margin-bottom: var(--space-6); }
+    .footer-logo { height: 52px; width: auto; margin: 0 auto; }
+    .footer-headline {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+    }
+    .footer-headline .highlight { color: var(--accent-teal); }
+    .footer-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-8);
+    }
+    .footer-pill {
+      background: rgba(10, 191, 188, 0.08);
+      border: 1px solid rgba(10, 191, 188, 0.15);
+      border-radius: var(--radius-full);
+      padding: 6px 16px;
+      font-size: 14px;
+      color: var(--accent-teal);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 500;
+    }
+    .footer-cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      align-items: center;
+      margin-bottom: var(--space-8);
+    }
+    @media (min-width: 480px) {
+      .footer-cta-group { flex-direction: row; justify-content: center; }
+    }
+    .footer-cta-group .btn-primary { font-size: 17px; padding: 18px 36px; }
+    .footer-vip-note {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .footer-vip-note span { color: var(--accent-teal); }
+    .footer-bottom {
+      margin-top: var(--space-12);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--border-glass);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ========================================
+       TESTIMONIALS STRIP
+    ======================================== */
+    #testimonials { background: var(--bg-deep); padding: var(--space-12) 0; }
+    .testimonials-scroll {
+      display: flex;
+      gap: var(--space-4);
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: var(--space-2) var(--space-4);
+      -webkit-overflow-scrolling: touch;
+    }
+    .testimonials-scroll::-webkit-scrollbar { display: none; }
+    @media (min-width: 1024px) {
+      .testimonials-scroll {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        overflow: visible;
+        padding: 0;
+      }
+    }
+    .testimonial-card {
+      flex-shrink: 0;
+      width: 240px;
+      padding: var(--space-6);
+    }
+    @media (min-width: 1024px) { .testimonial-card { width: auto; } }
+    .testimonial-quote {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: var(--space-4);
+      font-style: italic;
+    }
+    .testimonial-author {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* ========================================
+       RESPONSIVE: MOBILE-SPECIFIC
+    ======================================== */
+    @media (max-width: 639px) {
+      .hero-cta-group .btn-primary,
+      .hero-cta-group .btn-secondary { width: 100%; }
+      .vip-cta-group .btn-primary { width: 100%; }
+      .footer-cta-group .btn-primary,
+      .footer-cta-group .btn-secondary { width: 100%; }
+    }
+
+    /* ========================================
+       UTILITY
+    ======================================== */
+    .teal { color: var(--accent-teal); }
+    .gold { color: var(--accent-gold); }
+    .text-center { text-align: center; }
+    .mt-2 { margin-top: var(--space-2); }
+    .mt-4 { margin-top: var(--space-4); }
+    .mt-8 { margin-top: var(--space-8); }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-progress" role="progressbar" aria-hidden="true"></div>
+
+<!-- STICKY BAR -->
+<div id="sticky-bar" aria-hidden="true">
+  <div class="sticky-bar-left">
+    <img src="../../assets/logo.png" alt="Forexman" class="sticky-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+    <span class="sticky-logo-text" style="display:none">Forexman</span>
+  </div>
+  <a href="https://t.me/PLACEHOLDER_LINK" target="_blank" rel="noopener noreferrer" class="btn-primary sticky-bar-btn">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+    Join Free
+  </a>
+</div>
+
+<main>
+
+  <!-- ==================== HERO ==================== -->
+  <section id="hero" aria-label="Hero">
+    <div id="hero-glow" aria-hidden="true"></div>
+
+    <!-- Floating badges (desktop only) -->
+    <div class="hero-stat-float" aria-hidden="true">
+      <div class="float-badge">
+        <span class="float-badge-num">40K+</span>
+        <span class="float-badge-label">Active Traders</span>
+      </div>
+    </div>
+    <div class="hero-stat-float" aria-hidden="true">
+      <div class="float-badge">
+        <span class="float-badge-num">87%+</span>
+        <span class="float-badge-label">Win Rate</span>
+      </div>
+    </div>
+    <div class="hero-stat-float" aria-hidden="true">
+      <div class="float-badge">
+        <span class="float-badge-num">Free</span>
+        <span class="float-badge-label">VIP Access</span>
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-logo-wrap">
+        <img src="../../assets/logo.png" alt="Forexman" class="hero-logo" onerror="this.style.display='none'">
+      </div>
+
+      <div class="hero-badge-row">
+        <span class="badge">
+          <span class="live-dot" aria-hidden="true"></span>
+          40,000+ Traders Live
+        </span>
+        <span class="badge">FREE — No Subscriptions</span>
+      </div>
+
+      <h1 class="hero-headline section-headline" style="font-size: clamp(36px, 8vw, 62px);">
+        Trade Smarter.<br><span class="highlight">Profit Daily.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Daily Forex &amp; Crypto signals, free copy trading, and education A–Z — all on Telegram. Join 40,000+ traders already inside.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="https://t.me/PLACEHOLDER_LINK" target="_blank" rel="noopener noreferrer" class="btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Join Free on Telegram
+        </a>
+        <a href="#vip" class="btn-secondary">Get Free VIP Access</a>
+      </div>
+
+      <p class="hero-note">100% free. No subscriptions. No hidden fees.</p>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- ==================== STATS ==================== -->
+  <section id="stats" class="section section-bg-base" aria-label="Key Statistics">
+    <div class="container">
+      <div class="section-header text-center reveal">
+        <h2 class="section-headline">The Numbers Don't Lie</h2>
+        <p class="subheadline mt-2" style="margin-top: var(--space-3);">Real results. Real traders. Tracked every day.</p>
+      </div>
+
+      <div class="stats-grid" role="list">
+        <div class="glass-card stat-card reveal" role="listitem">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span class="stat-number" data-count="40000" data-suffix="+" aria-label="40,000+ traders">0</span>
+          <span class="stat-label">Channel Members</span>
+        </div>
+        <div class="glass-card stat-card reveal reveal-delay-1" role="listitem">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span class="stat-number" data-count="1000" data-suffix="+" aria-label="1,000+ VIP members">0</span>
+          <span class="stat-label">VIP Members</span>
+        </div>
+        <div class="glass-card stat-card reveal reveal-delay-2" role="listitem">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span class="stat-number" data-count="87" data-suffix="%+" aria-label="87%+ win rate">0</span>
+          <span class="stat-label">Verified Win Rate</span>
+        </div>
+        <div class="glass-card stat-card reveal reveal-delay-3" role="listitem">
+          <span class="stat-number" data-count="5" data-suffix="+" aria-label="5+ signals per day">0</span>
+          <span class="stat-label">Signals Every Day</span>
+        </div>
+        <div class="glass-card stat-card reveal reveal-delay-4" role="listitem">
+          <span class="stat-number" data-count="2000" data-suffix="+" aria-label="2,000+ pips per month on gold">0</span>
+          <span class="stat-label">XAUUSD Pips/Month</span>
+        </div>
+        <div class="glass-card stat-card reveal reveal-delay-5" role="listitem">
+          <span class="stat-number" data-count="1600" data-suffix="+" aria-label="1,600+ pips per month on forex">0</span>
+          <span class="stat-label">Forex Pips/Month</span>
+        </div>
+      </div>
+
+      <div class="stats-cta-row reveal">
+        <a href="https://t.me/PLACEHOLDER_LINK" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          See for Yourself — Join Free
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- ==================== FEATURES ==================== -->
+  <section id="features" class="section section-bg-deep" aria-label="Features">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="badge" style="margin-bottom: var(--space-4);">What You Get</div>
+        <h2 class="section-headline">Everything You Need to Trade Well</h2>
+        <p class="subheadline mt-2" style="margin-top: var(--space-3); max-width: 540px;">
+          One community. Signals, education, copy trading, and support — all free.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Trading Signals -->
+        <div class="glass-card feature-card reveal">
+          <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6,36 16,26 22,30 32,18 42,22"/>
+            <polyline points="34,22 42,22 42,30"/>
+          </svg>
+          <h3 class="feature-title">Daily Trading Signals</h3>
+          <p class="feature-desc">3–7 carefully analyzed Forex &amp; Crypto signals every day. Every signal includes entry, take profit, and stop loss levels. 87%+ verified win rate.</p>
+        </div>
+
+        <!-- Copy Trading -->
+        <div class="glass-card feature-card reveal reveal-delay-1">
+          <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="6" y="8" width="20" height="24" rx="3"/>
+            <rect x="22" y="16" width="20" height="24" rx="3"/>
+            <path d="M32 12 L38 12 M38 12 L35 9 M38 12 L35 15"/>
+          </svg>
+          <h3 class="feature-title">Free Copy Trading</h3>
+          <p class="feature-desc">Connect your broker account and let trades execute automatically. Set it up once — your account follows our signals in real-time. Completely free.</p>
+        </div>
+
+        <!-- Market Analysis -->
+        <div class="glass-card feature-card reveal reveal-delay-2">
+          <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="21" cy="21" r="13"/>
+            <line x1="30" y1="30" x2="42" y2="42"/>
+            <polyline points="15,21 19,17 23,23 27,18"/>
+          </svg>
+          <h3 class="feature-title">Market Analysis</h3>
+          <p class="feature-desc">Lukas's personal market outlook every day. In-depth breakdowns of what's moving the markets, key levels to watch, and real-time commentary.</p>
+        </div>
+
+        <!-- Education -->
+        <div class="glass-card feature-card reveal reveal-delay-1">
+          <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 16 L24 8 L42 16 L24 24 Z"/>
+            <path d="M14 20 L14 34 C14 34 18 38 24 38 C30 38 34 34 34 34 L34 20"/>
+            <line x1="42" y1="16" x2="42" y2="28"/>
+            <circle cx="42" cy="30" r="2" fill="currentColor" stroke="none"/>
+          </svg>
+          <h3 class="feature-title">Education A–Z</h3>
+          <p class="feature-desc">From Forex fundamentals to advanced strategy — complete education for every level. From zero to confident trader, step by step.</p>
+        </div>
+
+        <!-- Support -->
+        <div class="glass-card feature-card reveal reveal-delay-2">
+          <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 20 C8 12 15 6 24 6 C33 6 40 12 40 20 C40 28 33 34 24 34 L10 42 L14 34 C10 32 8 26 8 20Z"/>
+            <path d="M18 20 C18 17.8 19.8 16 22 16 C24.2 16 26 17.8 26 20 C26 22.2 24.2 24 22 24"/>
+            <circle cx="22" cy="28" r="1.5" fill="currentColor" stroke="none"/>
+          </svg>
+          <h3 class="feature-title">24/7 Mentorship &amp; Support</h3>
+          <p class="feature-desc">Never trade alone. Get personal mentorship and live support around the clock. Real humans, real help, real fast.</p>
+        </div>
+
+        <!-- Community -->
+        <div class="glass-card feature-card reveal reveal-delay-3">
+          <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="16" cy="18" r="6"/>
+            <circle cx="32" cy="18" r="6"/>
+            <path d="M4 40 C4 32 9.4 26 16 26"/>
+            <path d="M44 40 C44 32 38.6 26 32 26"/>
+            <path d="M16 26 C16 26 20 30 24 30 C28 30 32 26 32 26 C32 32 38.6 38 44 40 C44 40 4 40 4 40 C10 38 16 32 16 26Z"/>
+          </svg>
+          <h3 class="feature-title">40K+ Community</h3>
+          <p class="feature-desc">Join a global network of like-minded traders sharing ideas, motivation, and market insights. From beginners to pros — everyone grows together.</p>
+        </div>
+      </div>
+
+      <div class="features-cta-row reveal">
+        <a href="https://t.me/PLACEHOLDER_LINK" target="_blank" rel="noopener noreferrer" class="btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Get Free Signals Now
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- ==================== PERFORMANCE ==================== -->
+  <section id="performance" class="section section-bg-base" aria-label="Signal Performance">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="badge" style="margin-bottom: var(--space-4);">Track Record</div>
+        <h2 class="section-headline">Proof It Actually Works</h2>
+        <p class="subheadline mt-2" style="margin-top: var(--space-3); max-width: 520px;">
+          We track every single trade. Here's what the numbers look like.
+        </p>
+      </div>
+
+      <div class="performance-layout">
+        <!-- Left: metrics grid -->
+        <div class="performance-metrics-grid">
+          <div class="glass-card perf-card reveal">
+            <p class="perf-pair">XAUUSD — Gold</p>
+            <p class="perf-pips">+2,000</p>
+            <p class="perf-period">pips / month</p>
+          </div>
+          <div class="glass-card perf-card reveal reveal-delay-1">
+            <p class="perf-pair">Forex Pairs</p>
+            <p class="perf-pips">+1,600</p>
+            <p class="perf-period">pips / month</p>
+          </div>
+          <div class="glass-card perf-card reveal reveal-delay-2">
+            <p class="perf-pair">Daily Avg</p>
+            <p class="perf-pips">+80</p>
+            <p class="perf-period">pips / day</p>
+          </div>
+          <div class="glass-card perf-card reveal reveal-delay-3">
+            <p class="perf-pair">Volume</p>
+            <p class="perf-pips">100+</p>
+            <p class="perf-period">signals / month</p>
+          </div>
+        </div>
+
+        <!-- Right: win rate highlight -->
+        <div class="performance-visual reveal reveal-delay-2">
+          <div class="glass-card perf-highlight-card">
+            <div class="win-rate-wrap">
+              <div class="win-rate-circle">
+                <svg viewBox="0 0 80 80" aria-hidden="true">
+                  <circle class="circle-bg" cx="40" cy="40" r="35"/>
+                  <circle class="circle-fill" cx="40" cy="40" r="35"/>
+                </svg>
+                <div class="win-rate-text-wrap">
+                  <span class="win-rate-pct">87%</span>
+                </div>
+              </div>
+              <div class="win-rate-info">
+                <h3>87%+ Verified Win Rate</h3>
+                <p>We track every single signal — entries, take profits, stop losses. No cherry-picking. No marketing fluff.</p>
+              </div>
+            </div>
+
+            <!-- Decorative mini chart -->
+            <div class="chart-decoration" aria-hidden="true">
+              <svg viewBox="0 0 400 60" preserveAspectRatio="none">
+                <polyline
+                  fill="none"
+                  stroke="var(--accent-teal)"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  points="0,45 30,40 60,35 90,38 120,28 150,22 180,25 210,18 240,12 270,16 300,8 330,10 360,5 400,8"
+                />
+              </svg>
+            </div>
+
+            <div class="signal-stats-row" style="margin-top: var(--space-4);">
+              <div class="signal-stat">
+                <span class="signal-stat-num">3–7</span>
+                <span class="signal-stat-label">Signals Daily</span>
+              </div>
+              <div class="signal-stat">
+                <span class="signal-stat-num">100+</span>
+                <span class="signal-stat-label">Per Month</span>
+              </div>
+              <div class="signal-stat">
+                <span class="signal-stat-num">Free</span>
+                <span class="signal-stat-label">Always</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="performance-cta-row reveal">
+        <a href="https://t.me/PLACEHOLDER_LINK" target="_blank" rel="noopener noreferrer" class="btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Start Trading Smarter
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- ==================== VIP ==================== -->
+  <section id="vip" class="section section-bg-deep" aria-label="Free VIP Access">
+    <div class="container vip-container">
+      <div class="glass-card vip-card reveal" style="border-color: rgba(212, 168, 83, 0.2); box-shadow: 0 8px 48px rgba(0,0,0,0.4), var(--glow-gold);">
+        <div class="vip-top">
+          <div>
+            <div class="vip-badges" style="margin-bottom: var(--space-4); flex-direction: row; flex-wrap: wrap; gap: var(--space-2);">
+              <span class="badge badge-gold">100% FREE</span>
+              <span class="badge badge-gold">VIP ROOM</span>
+              <span class="badge badge-gold">$0 Forever</span>
+            </div>
+            <h2 class="vip-title">The VIP Room That<br><span>Costs You Nothing</span></h2>
+            <p class="vip-sub">For ambitious traders who want real results — without paying a dime.</p>
+          </div>
+        </div>
+
+        <div class="vip-checklists">
+          <div>
+            <p class="checklist-title">What's Included</p>
+            <ul class="checklist" role="list">
+              <li class="check-item">
+                <span class="check-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg></span>
+                <span class="check-text">3–7 premium signals daily (Forex + Crypto)</span>
+              </li>
+              <li class="check-item">
+                <span class="check-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg></span>
+                <span class="check-text">87%+ verified win rate — we track every trade</span>
+              </li>
+              <li class="check-item">
+                <span class="check-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg></span>
+                <span class="check-text">Auto copy trading connection to your account</span>
+              </li>
+              <li class="check-item">
+                <span class="check-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg></span>
+                <span class="check-text">Full Trading Guide from A to Z</span>
+              </li>
+              <li class="check-item">
+                <span class="check-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg></span>
+                <span class="check-text">24/7 personal mentorship &amp; live support</span>
+              </li>
+              <li class="check-item">
+                <span class="check-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg></span>
+                <span class="check-text">In-depth market breakdowns</span>
+              </li>
+              <li class="check-item">
+                <span class="check-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg></span>
+                <span class="check-text">Daily mindset &amp; risk management tips</span>
+              </li>
+              <li class="check-item">
+                <span class="check-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg></span>
+                <span class="check-text">Fast-track learning — no fluff, no filler</span>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <p class="checklist-title">What We Don't Do</p>
+            <ul class="checklist" role="list">
+              <li class="check-item">
+                <span class="cross-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="3" x2="9" y2="9"/><line x1="9" y1="3" x2="3" y2="9"/></svg></span>
+                <span class="cross-text">No paid subscriptions</span>
+              </li>
+              <li class="check-item">
+                <span class="cross-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="3" x2="9" y2="9"/><line x1="9" y1="3" x2="3" y2="9"/></svg></span>
+                <span class="cross-text">No upsells</span>
+              </li>
+              <li class="check-item">
+                <span class="cross-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="3" x2="9" y2="9"/><line x1="9" y1="3" x2="3" y2="9"/></svg></span>
+                <span class="cross-text">No hidden fees</span>
+              </li>
+            </ul>
+
+            <div style="margin-top: var(--space-8); padding: var(--space-6); background: rgba(212,168,83,0.05); border: 1px solid rgba(212,168,83,0.15); border-radius: var(--radius-md);">
+              <p style="font-size: 13px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent-gold); margin-bottom: var(--space-2);">The Only Ask</p>
+              <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.7;">Open a free account with our trusted partner broker — that's it. You'll be trading within minutes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="vip-cta-group">
+          <a href="https://t.me/PLACEHOLDER_LINK" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background: var(--gradient-gold); box-shadow: 0 4px 20px rgba(212,168,83,0.3);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            Get Free VIP Access Now
+          </a>
+        </div>
+
+        <p class="vip-how-to">Send <span>"VIP"</span> to <span>@forexman_official</span> — get set up in 10 minutes.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- ==================== EDUCATION ==================== -->
+  <section id="education" class="section section-bg-base" aria-label="Education">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="badge" style="margin-bottom: var(--space-4);">Education A–Z</div>
+        <h2 class="section-headline">We Don't Just Give Signals —<br>We Teach You to Trade</h2>
+        <p class="subheadline mt-2" style="margin-top: var(--space-3); max-width: 520px;">
+          From absolute zero to confident trader. Educational content posted daily in the channel.
+        </p>
+      </div>
+
+      <div class="education-grid">
+        <div class="glass-card edu-card reveal">
+          <div class="edu-emoji" aria-hidden="true">🧠</div>
+          <h3 class="edu-title">Fundamentals</h3>
+          <div class="edu-topics">
+            <p class="edu-topic">What is Forex: history and essence</p>
+            <p class="edu-topic">Currency pairs — how to read them</p>
+            <p class="edu-topic">Spreads, lots, pips, swaps explained</p>
+          </div>
+        </div>
+
+        <div class="glass-card edu-card reveal reveal-delay-1">
+          <div class="edu-emoji" aria-hidden="true">💡</div>
+          <h3 class="edu-title">Mindset &amp; Strategy</h3>
+          <div class="edu-topics">
+            <p class="edu-topic">Trading is a Marathon — play the long game</p>
+            <p class="edu-topic">Discipline in trading and life</p>
+            <p class="edu-topic">How to overcome fear of entering trades</p>
+          </div>
+        </div>
+
+        <div class="glass-card edu-card reveal reveal-delay-2">
+          <div class="edu-emoji" aria-hidden="true">📊</div>
+          <h3 class="edu-title">Deeper Practice</h3>
+          <div class="edu-topics">
+            <p class="edu-topic">What really moves exchange rates?</p>
+            <p class="edu-topic">Types of Forex traders — find your style</p>
+            <p class="edu-topic">Risk management essentials</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="education-footer reveal">
+        <p class="edu-note">Educational content drops <span>daily</span> — in the channel, for free, forever.</p>
+        <a href="https://t.me/PLACEHOLDER_LINK" target="_blank" rel="noopener noreferrer" class="btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Start Learning Free
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- ==================== COPY TRADING ==================== -->
+  <section id="copy-trading" class="section section-bg-deep" aria-label="Copy Trading">
+    <div class="container">
+      <div class="copy-layout">
+        <div class="section-header reveal">
+          <div class="badge" style="margin-bottom: var(--space-4);">Auto Copy Trading</div>
+          <h2 class="section-headline">Can't Watch the Charts?<br>Let Your Account Trade for You.</h2>
+          <p class="subheadline mt-2" style="margin-top: var(--space-3);">
+            3 steps. 10 minutes to set up. Trades copy automatically from that point on.
+          </p>
+        </div>
+
+        <div class="copy-steps" role="list">
+          <div class="copy-step reveal" role="listitem">
+            <div class="copy-step-num" aria-hidden="true">1</div>
+            <div class="copy-step-content">
+              <h3 class="copy-step-title">Open a Free Broker Account</h3>
+              <p class="copy-step-desc">Sign up with our trusted partner broker through our link — it's free and takes 5 minutes. No deposit required to start.</p>
+            </div>
+          </div>
+          <div class="copy-step reveal reveal-delay-1" role="listitem">
+            <div class="copy-step-num" aria-hidden="true">2</div>
+            <div class="copy-step-content">
+              <h3 class="copy-step-title">Connect to the Forexman System</h3>
+              <p class="copy-step-desc">Link your account to our copy trading setup. Our team walks you through every step — you're never alone in this.</p>
+            </div>
+          </div>
+          <div class="copy-step reveal reveal-delay-2" role="listitem">
+            <div class="copy-step-num" aria-hidden="true">3</div>
+            <div class="copy-step-content">
+              <h3 class="copy-step-title">Relax — Trades Copy Automatically</h3>
+              <p class="copy-step-desc">Every time we open a trade, your account mirrors it in real-time. Trade while you sleep, work, or live your life.</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="copy-tagline reveal"><strong>"Set it and forget it"</strong> — your account follows our signals in real-time.</p>
+
+        <div class="copy-cta-row reveal">
+          <a href="https://t.me/PLACEHOLDER_LINK" target="_blank" rel="noopener noreferrer" class="btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            Start Copy Trading Free
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- ==================== TESTIMONIALS ==================== -->
+  <section id="testimonials" class="section-bg-base" aria-label="Testimonials">
+    <div class="container" style="padding-top: var(--space-12); padding-bottom: var(--space-12);">
+      <div class="section-header text-center reveal" style="margin-bottom: var(--space-8);">
+        <h2 class="section-headline" style="font-size: clamp(22px, 3vw, 30px);">What Traders Are Saying</h2>
+      </div>
+      <div class="testimonials-scroll" role="list">
+        <div class="glass-card testimonial-card reveal" role="listitem">
+          <p class="testimonial-quote">"I was completely new to Forex. Forexman's education and signals gave me the confidence to start trading for real."</p>
+          <span class="testimonial-author">— Alex, Germany</span>
+        </div>
+        <div class="glass-card testimonial-card reveal reveal-delay-1" role="listitem">
+          <p class="testimonial-quote">"The copy trading feature is a game-changer. I set it up once and my account just works."</p>
+          <span class="testimonial-author">— Maria, Spain</span>
+        </div>
+        <div class="glass-card testimonial-card reveal reveal-delay-2" role="listitem">
+          <p class="testimonial-quote">"87% win rate isn't just marketing — I've tracked my results for 3 months and it's legit."</p>
+          <span class="testimonial-author">— James, UK</span>
+        </div>
+        <div class="glass-card testimonial-card reveal reveal-delay-3" role="listitem">
+          <p class="testimonial-quote">"Best free trading community I've found. The VIP room is actually free — no catches."</p>
+          <span class="testimonial-author">— Yuki, Japan</span>
+        </div>
+        <div class="glass-card testimonial-card reveal reveal-delay-4" role="listitem">
+          <p class="testimonial-quote">"Lukas genuinely cares about helping traders learn. The education content alone is worth it."</p>
+          <span class="testimonial-author">— Omar, UAE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- ==================== ABOUT ==================== -->
+  <section id="about" class="section section-bg-deep" aria-label="About Forexman">
+    <div class="container">
+      <div class="glass-card about-card reveal">
+        <div class="about-inner">
+          <div class="about-brand-icon">
+            <img src="../../assets/logo.png" alt="" aria-hidden="true" onerror="this.parentElement.innerHTML='<svg width=\'32\' height=\'32\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\' aria-hidden=\'true\'><circle cx=\'12\' cy=\'12\' r=\'10\'/><path d=\'M12 8v4l3 3\'/></svg>'">
+          </div>
+          <div class="about-text">
+            <h2>Built by Traders, for Traders</h2>
+            <p>Forexman is a trading community founded by Lukas — an active trader who believes trading knowledge shouldn't be locked behind paywalls. What started as a personal channel has grown into a 40,000+ member community spanning the globe. Our mission: give every trader — from beginner to advanced — the tools, signals, and education to trade with confidence.</p>
+            <div class="about-values" role="list">
+              <span class="about-value" role="listitem">Transparency</span>
+              <span class="about-value" role="listitem">Education</span>
+              <span class="about-value" role="listitem">Results</span>
+              <span class="about-value" role="listitem">Community</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top: var(--space-8);">
+        <a href="https://t.me/PLACEHOLDER_LINK" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Join 40,000+ Traders
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- ==================== DISCLAIMER ==================== -->
+  <section id="disclaimer" class="section section-bg-base" aria-label="Risk Disclosure and Disclaimer">
+    <div class="container">
+      <div class="disclaimer-card reveal">
+        <div class="disclaimer-warning">
+          <span class="disclaimer-warning-icon" aria-hidden="true">⚠️</span>
+          <span class="disclaimer-warning-text">Risk Disclosure &amp; Legal Disclaimer</span>
+        </div>
+        <p class="disclaimer-text">
+          <strong>Risk Disclosure:</strong> Trading CFDs (Contracts for Difference) involves a high level of risk due to leverage. 74–89% of retail investors lose money when trading CFDs. Please ensure you understand how CFDs work and consider whether you can afford the risk of losing your funds.
+        </p>
+        <p class="disclaimer-text">
+          <strong>Disclaimer:</strong> All information, signals, and analyses shared by Forexman are provided for <strong>educational purposes only</strong> and do not constitute financial advice. Any trading decisions you make are your own responsibility. Consider seeking independent financial advice before making investment decisions.
+        </p>
+        <p class="disclaimer-text">
+          <strong>FCA Notice:</strong> Forexman is not authorized by the UK Financial Conduct Authority (FCA) and does not provide regulated investment or trading services. UK residents should ensure any broker/platform they use is FCA-authorized and regulated.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- ==================== FOOTER CTA ==================== -->
+  <footer id="footer-cta" aria-label="Join Forexman">
+    <div class="container footer-content">
+      <div class="footer-logo-wrap">
+        <img src="../../assets/logo.png" alt="Forexman" class="footer-logo" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<p style=\'font-family: Plus Jakarta Sans, sans-serif; font-weight: 800; font-size: 28px; color: var(--accent-teal);\'>Forexman</p>')">
+      </div>
+
+      <h2 class="footer-headline reveal">
+        Ready to Start Trading <span class="highlight">Smarter?</span>
+      </h2>
+
+      <div class="footer-pills reveal">
+        <span class="footer-pill">✅ Free Signals</span>
+        <span class="footer-pill">✅ Free VIP Access</span>
+        <span class="footer-pill">✅ Free Copy Trading</span>
+        <span class="footer-pill">✅ Free Education</span>
+      </div>
+
+      <div class="footer-cta-group reveal">
+        <a href="https://t.me/PLACEHOLDER_LINK" target="_blank" rel="noopener noreferrer" class="btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Join Forexman on Telegram — It's Free
+        </a>
+        <a href="https://t.me/PLACEHOLDER_LINK" target="_blank" rel="noopener noreferrer" class="btn-secondary">Get Free VIP Access</a>
+      </div>
+
+      <p class="footer-vip-note reveal">Or send <span>"VIP"</span> to <span>@forexman_official</span> for premium access</p>
+
+      <div class="footer-bottom">
+        <p>© 2026 Forexman. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  /* ========================================
+     SCROLL PROGRESS BAR
+  ======================================== */
+  const progressBar = document.getElementById('scroll-progress');
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = pct + '%';
+  }
+
+  /* ========================================
+     STICKY BAR
+  ======================================== */
+  const stickyBar = document.getElementById('sticky-bar');
+  const heroSection = document.getElementById('hero');
+  let heroBottom = 0;
+
+  function updateHeroBottom() {
+    heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+  }
+
+  function updateStickyBar() {
+    if (window.scrollY > heroBottom - 80) {
+      stickyBar.classList.add('visible');
+      stickyBar.removeAttribute('aria-hidden');
+    } else {
+      stickyBar.classList.remove('visible');
+      stickyBar.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  /* ========================================
+     SCROLL HANDLER (throttled)
+  ======================================== */
+  let ticking = false;
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateProgress();
+        updateStickyBar();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(updateHeroBottom, 150);
+  }, { passive: true });
+
+  updateHeroBottom();
+
+  /* ========================================
+     INTERSECTION OBSERVER — SCROLL REVEALS
+  ======================================== */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  /* ========================================
+     STAT COUNTER ANIMATION
+  ======================================== */
+  function easeOut(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  function formatNumber(val, count) {
+    if (count >= 1000) {
+      return val.toLocaleString('en-US');
+    }
+    return Math.round(val);
+  }
+
+  function animateCounter(el, target, suffix, duration) {
+    const start = performance.now();
+    function step(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = easeOut(progress);
+      const current = easedProgress * target;
+
+      if (target >= 1000) {
+        el.textContent = Math.round(current).toLocaleString('en-US') + suffix;
+      } else {
+        el.textContent = Math.round(current) + suffix;
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        if (target >= 1000) {
+          el.textContent = target.toLocaleString('en-US') + suffix;
+        } else {
+          el.textContent = target + suffix;
+        }
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const count = parseInt(el.dataset.count, 10);
+        const suffix = el.dataset.suffix || '';
+        animateCounter(el, count, suffix, 2000);
+        statObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.stat-number[data-count]').forEach(el => statObserver.observe(el));
+
+  /* ========================================
+     WIN RATE CIRCLE ANIMATION
+  ======================================== */
+  const circleFill = document.querySelector('.circle-fill');
+  if (circleFill) {
+    const circleObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const circumference = 220;
+          const target = circumference * (1 - 0.87);
+          const start = performance.now();
+          const duration = 1800;
+
+          circleFill.style.strokeDashoffset = circumference;
+
+          function animCircle(now) {
+            const t = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - t, 3);
+            circleFill.style.strokeDashoffset = circumference - eased * (circumference - target);
+            if (t < 1) requestAnimationFrame(animCircle);
+          }
+          requestAnimationFrame(animCircle);
+          circleObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    circleObserver.observe(document.querySelector('.win-rate-circle'));
+  }
+</script>
+</body>
+</html>

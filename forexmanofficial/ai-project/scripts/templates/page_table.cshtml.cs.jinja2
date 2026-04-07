@@ -1,0 +1,65 @@
+using DataTables.AspNet.AspNetCore;
+using DataTables.AspNet.Core;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
+using NexlotCabinetWeb.Extentions;
+using NexlotCabinetWeb.Helpers;
+using NexlotCabinetWeb.Localization;
+using NexlotCabinetWeb.Models.PageModels;
+
+namespace {{ namespace }}
+{
+    [Authorize]
+    public class {{ class_name }} : PageModel
+    {
+        private readonly ILogger<{{ class_name }}> logger;
+        private readonly IStringLocalizer<SharedResource> localizer;
+
+        public OviIndexPageConfig TableConfig { get; private set; } = null!;
+
+        public {{ class_name }}(
+            ILogger<{{ class_name }}> loggerArg,
+            IStringLocalizer<SharedResource> localizerArg)
+        {
+            logger    = loggerArg;
+            localizer = localizerArg;
+        }
+
+        public IActionResult OnGet()
+        {
+            var config = new OviIndexPageConfig(
+                isAdd:            false,
+                isAddFullPage:    false,
+                addUrl:           null,
+                tableUrl:         Url.Page("{{ page_name }}", pageHandler: "LoadTable"),
+                isTableLastFixed: false,
+                isWithSearch:     true,
+                isWithFilters:    true,
+                isDelete:         false);
+
+            config.TableId      = "{{ table_id }}";
+            config.ExtraClasses = "nexlot-table";
+
+            TableConfig = config;
+            return Page();
+        }
+
+        // ── Load Table ────────────────────────────────────────────────────────────
+
+        public IActionResult OnGetLoadTable(IDataTablesRequest request)
+        {
+            if (!this.IsSignedIn()) return this.ResultForbidden();
+
+            // TODO: replace with actual data source
+            var data = new List<object>();
+            var totalCount    = data.Count;
+            var filteredCount = data.Count;
+            var dataPage      = data.Skip(request.Start).Take(request.Length).ToList();
+
+            var response = DataTablesResponse.Create(request, totalCount, filteredCount, dataPage);
+            return new DataTablesJsonResult(response, true);
+        }
+    }
+}

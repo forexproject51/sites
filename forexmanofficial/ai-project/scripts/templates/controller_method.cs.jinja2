@@ -1,0 +1,21 @@
+
+{% if method == "post" %}
+    [HttpPost("{{ method_name }}")]
+{% else %}
+    [HttpGet("{{ method_name }}")]
+{% endif %}
+{% if with_body %}
+    public IActionResult {{ method_name }}([FromBody] {{ with_body }} model)
+{% else %}
+    public IActionResult {{ method_name }}(LoadSelectModel model)
+{% endif %}
+    {
+        if (!ModelState.IsValid)
+        {
+            return this.ResultValidation();
+        }
+
+        // TODO: implement
+
+        return new JsonResult(new { });
+    }

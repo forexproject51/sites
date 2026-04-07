@@ -1,0 +1,30 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using NexlotCabinetWeb.Localization;
+using NexlotDatabase.Database;
+{% if authorize %}
+using Microsoft.AspNetCore.Authorization;
+{% endif %}
+
+namespace {{ namespace }};
+
+{% if authorize %}
+[Authorize]
+{% endif %}
+[Route("[controller]")]
+public class {{ controller_name }} : Controller
+{
+    private readonly ApplicationDbContext dbContext;
+    private readonly ILogger<{{ controller_name }}> logger;
+    private readonly IStringLocalizer<SharedResource> localizer;
+
+    public {{ controller_name }}(
+        ApplicationDbContext dbContextArg,
+        ILogger<{{ controller_name }}> loggerArg,
+        IStringLocalizer<SharedResource> localizerArg)
+    {
+        dbContext  = dbContextArg;
+        logger    = loggerArg;
+        localizer = localizerArg;
+    }
+}

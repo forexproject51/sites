@@ -1,0 +1,13 @@
+using Microsoft.Extensions.Logging;
+
+namespace {{ namespace }};
+
+public class {{ service_name }} : {{ interface_name }}
+{
+    private readonly ILogger<{{ service_name }}> logger;
+
+    public {{ service_name }}(ILogger<{{ service_name }}> loggerArg)
+    {
+        logger = loggerArg;
+    }
+}

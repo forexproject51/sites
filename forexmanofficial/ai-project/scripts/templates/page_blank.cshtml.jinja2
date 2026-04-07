@@ -1,0 +1,21 @@
+@page
+@model {{ namespace }}.{{ class_name }}
+@{
+    ViewData["Title"] = "{{ title }}";
+    ViewData["PageBg"] = "dashboard";
+    ViewBag.pTitle    = "{{ title }}";
+    ViewBag.pageTitle = "Home";
+}
+
+<div data-ovi-page>
+
+    @* Hidden form — provides antiforgery token for AJAX POSTs *@
+    <form method="post" class="d-none" data-af-form></form>
+
+    @* ─── Page Content ─────────────────────────────────────────────────────── *@
+
+</div>
+
+@section scripts {
+    <script src="{{ js_rel_path }}"></script>
+}

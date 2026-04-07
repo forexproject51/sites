@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /bootstrap/
+Allow: /data/
+Allow: /trustbox-data/
+Allow: /trustboxes/
+Disallow: /

@@ -1,0 +1,1280 @@
+# Cursor AI Development Protocol
+
+> **This file is a human reference document.** Agents: do NOT read this file. Read your role definition from `ai-general/agents/roles/{your-role}.md` instead. This document exists for onboarding and orientation only.
+
+## 1. Core Philosophy
+
+Maximize LLM-driven development while minimizing token waste and cost.
+
+**Principles:**
+
+- **Model tiering** — cheap models for simple tasks, powerful models for complex ones. Never overspend on trivial work.
+- **Agent specialization** — each agent owns one domain. No "full-stack" agents that load everything.
+- **Rule address book** — agent files carry conditional pointers to rules, not rules themselves. Load only what the current task needs.
+- **ai-workspace first** — agents read auto-generated context summaries before touching real code. Identify needed files and line ranges from summaries, then read surgically. Never read full files blind.
+- **Parallelization** — independent tasks run concurrently via separate agent spawns. Dependencies are explicit and enforced.
+- **User is the gatekeeper** — plans require user review before execution. No autonomous bulk execution without approval.
+
+---
+
+## 2. Folder Architecture
+
+### .cursor/ — Cursor-Native (auto-loaded)
+
+```
+.cursor/
+  rules/          # Minimal .mdc rules. Auto-loaded by Cursor.
+                  # Primary job: point agents to ai-general/ and ai-project/ rules.
+  agents/         # Cursor subagent definitions (thin wrappers referencing role files)
+  commands/       # Slash commands (/commit, /plan, /quick)
+```
+
+`.cursor/rules/` files are kept short (<500 tokens each). They exist to trigger Cursor's auto-loading and redirect agents to the detailed rules in `ai-general/` and `ai-project/`.
+
+### ai-general/ — Portable, Project-Agnostic
+
+```
+ai-general/
+  overview.md                   # Index: what to read and when
+  agents/
+    index.md                    # Agent registry ("If you need X, use Y")
+    roles/                      # One role definition per agent
+      planner.md
+      task-runner.md
+      dev-leader.md
+      dev-cs.md
+      dev-js.md
+      dev-htmlcss.md
+      ux-designer.md
+      copywriter.md
+      auditor.md
+  rules/
+    code/
+      cs/                       # C# rules: core.md, db.md, ajax.md, file-structure.md
+      js/                       # JS rules: core.md, components.md, tables.md
+      htmlcss/                  # CSHTML+SCSS rules: core.md, styling.md, components.md
+    dev/
+      overview.md               # General development process rules
+  formats/                      # Strict file format specifications
+    task.md                     # Task/plan file format
+    agent-role.md               # Agent role file format
+    rule.md                     # Rule file format
+    workspace-context.md        # Workspace context file format
+    plan.md                     # Plan file format
+  communication/
+    agent-protocol.md           # Inter-agent communication format
+    user-protocol.md            # How agents communicate with user
+```
+
+This folder is **portable**. Copy it to any project and it works. Contains no project-specific references.
+
+### ai-project/ — Project-Specific
+
+```
+ai-project/
+  overview.md                   # What this project is, tech stack, project vibe
+  config.md                     # Model tier mapping, project-specific settings
+  rules/
+    code/
+      cs/                       # Project-specific C# rules + accumulated learnings
+      js/                       # Project-specific JS rules + accumulated learnings
+      htmlcss/                  # Project-specific CSHTML/SCSS rules + accumulated learnings
+    ux/
+      core.md                   # Design personality, color semantics, hierarchy, spacing, icons
+      page-layouts.md           # Layout patterns per page type (dashboard, table, detail, wizard, etc.)
+      mobile.md                 # Responsive behavior, button sizing, touch targets
+      components.md             # Component decision guide, button hierarchy, card variants
+    tone-of-voice.md            # Copywriting tone, text conventions
+```
+
+Project-specific conventions, learnings from agent corrections, and configuration. This folder is NOT portable.
+
+### ai-workspace/ — Project-Specific, Auto-Generated
+
+```
+ai-workspace/
+  tasks/                        # Plan files (Planner output, user-reviewed)
+    {task-name}/                # One folder per plan
+      plan.md                   # The structured plan
+      status.md                 # Execution status tracker
+  pages/                        # Page context summaries (mirrors project folder structure)
+  services/                     # Service context summaries
+  controllers/                  # Controller context summaries
+  helpers/                      # Helper context summaries
+  changelog.md                  # Log of agent self-improvement rule changes
+```
+
+Context files are generated by a dedicated scanner agent/command and updated by dev agents after structural changes. Folder structure inside `pages/`, `services/`, etc. mirrors the actual project structure.
+
+---
+
+## 3. Agent Hierarchy
+
+### Overview
+
+```
+User
+  |
+  |-- (single scope)  --> Dev agent directly (or /quick command)
+  |-- (multi scope)   --> DevLeader --> Dev agents
+  |-- (bulk scope)    --> Planner --> [user review] --> TaskRunner --> DevLeader(s) --> Dev agents
+```
+
+Ten agents. Two orchestration layers (Planner, TaskRunner, DevLeader). Five dev agents (DevCS, DevJS, DevHTMLCSS, UXDesigner, Copywriter). Two utility agents (RuleManager, Scaffolder). One quality agent (Auditor).
+
+### 3.1 Planner
+
+**Purpose:** Transform user's chaotic task list into a structured execution plan.
+
+**When used:** Bulk scope tasks only. User invokes manually or via `/plan` command.
+
+**Model:** Powerful (runs in Plan Mode).
+
+**Discuss phase:** When invoked in Plan Mode, the Planner first identifies gray areas and asks the user targeted questions (max 3-5, multiple choice preferred). Decisions are locked into a DECISIONS block in the plan. In Agent Mode, only critical ambiguities trigger questions (max 2-3, all at once).
+
+**Workflow:**
+1. Read user's task input (free-form list of things to do)
+2. Read `ai-general/agents/index.md` to understand available agents
+3. Read `ai-project/config.md` for path aliases and build commands
+4. Read `ai-workspace/` context files to understand project structure
+5. If tasks involve UI features, spawn UXDesigner for high-level layout decisions
+6. Decompose tasks into atomic units
+7. Map dependencies as a directed acyclic graph (DAG)
+8. Group tasks by context similarity (e.g., by page, by service) to minimize agent context-loading
+9. Assign agents and effort tags (low/mid/high) to each task
+10. Define parallelization strategy (which groups can run concurrently)
+11. Self-validate using built-in checklist (coverage, scope reduction, verify commands, dependency integrity, path aliases)
+12. Output structured plan file to `ai-workspace/tasks/{task-name}/plan.md`
+
+**Self-validation checklist** (run after generating, fix failures inline, do NOT iterate beyond fixing failures):
+
+| # | Check |
+|---|-------|
+| 1 | Every requirement from user input maps to at least one task |
+| 2 | No tasks contain scope reduction language ("simplified", "basic for now", etc.) |
+| 3 | Every task has a non-empty `verify` field with `command` + `expect` |
+| 4 | Every task has agents assigned matching domain |
+| 5 | All `depends_on` references point to valid task IDs |
+| 6 | No circular dependencies between groups |
+| 7 | All file paths use aliases from `ai-project/config.md` |
+
+**Output:** Plan file following the plan file format (see section 12.3). Output in ONE pass — fix only check failures, no cosmetic passes.
+
+**Constraints:**
+- NEVER write code or make technical implementation decisions
+- NEVER start execution — output the plan and stop
+- ALWAYS tag every task with effort level and agent assignment
+- ALWAYS identify blocking dependencies between tasks
+- ALWAYS use path aliases from `ai-project/config.md` in file paths
+
+### 3.2 TaskRunner
+
+**Purpose:** Dispatch plan groups to DevLeaders in dependency order.
+
+**When used:** Bulk scope execution. User starts manually after reviewing the plan.
+
+**Model:** Fast. Pure mechanical dispatch — no technical judgment.
+
+**Workflow:**
+1. Read plan file from `ai-workspace/tasks/{task-name}/plan.md`
+2. Identify group execution order from DAG
+3. For each group (respecting dependency order):
+   a. Spawn DevLeader with the group's tasks
+   b. Wait for DevLeader result
+   c. If DevLeader reports `blocked`, pause and notify user
+   d. If DevLeader reports `done`, proceed to next group
+4. After all groups complete, spawn Auditor for final verification
+5. Report overall status to user
+
+**Constraints:**
+- NEVER make technical decisions — just dispatch
+- NEVER modify the plan — only DevLeader can do that
+- NEVER spawn more than one DevLeader per group
+- ALWAYS respect group dependency order from the DAG
+
+### 3.3 DevLeader
+
+**Purpose:** Technical orchestrator for a group of tasks. Investigates code, makes implementation decisions, spawns and coordinates dev agents.
+
+**When used:** Multi scope (spawned by user) or bulk scope (spawned by TaskRunner).
+
+**Model:** Powerful. Makes technical judgments, reassesses effort levels.
+
+**Workflow:**
+1. Read the assigned tasks (from plan file or direct user input)
+2. Read `ai-general/agents/index.md` for agent selection
+3. Read `ai-workspace/` context files for all files mentioned in tasks
+4. Investigate actual code where context files are insufficient
+5. Reassess effort tags — update if Planner's assessment was wrong
+6. Split, merge, add, or remove tasks if technical investigation reveals the need
+7. Determine execution order within the group (which tasks first, which can be parallel)
+8. For each task:
+   a. Select agent based on task domain (from agent index)
+   b. Select model based on effort tag
+   c. Compose task spec in inter-agent format (see section 8.1)
+   d. Spawn dev agent
+   e. Review result
+   f. If result is `needs-other`, handle cross-agent request (see section 13.5): spawn the needed agent, then resume the original agent with the result
+   g. If result is `rotate`, read PROGRESS/RESUME_FROM, spawn fresh agent with original spec + progress summary (max 2 rotations per task)
+   h. If result is `failed` or `blocked`, attempt resolution or escalate to user
+9. After all tasks complete, verify integration across changes
+10. Report group result to TaskRunner or user
+
+**Authority:**
+- CAN modify effort tags after investigation
+- CAN split one task into multiple
+- CAN merge related tasks
+- CAN add discovered dependency tasks
+- CAN remove tasks found to be unnecessary
+- CANNOT restructure groups or change group dependencies (that's Planner's domain)
+
+**Failure-to-rule pipeline:** When a dev agent reports `failed` or `blocked` with a cause that is likely to recur, DevLeader writes an `[auto]` entry to the appropriate `ai-project/rules/` file and logs it in `ai-workspace/changelog.md`. See section 9.
+
+**Constraints:**
+- NEVER write application code directly — always delegate to dev agents
+- ALWAYS read ai-workspace context before reading actual code files
+- ALWAYS verify dev agent results before reporting group as done
+
+### 3.4 DevCS
+
+**Purpose:** Backend C# development. PageModel handlers, EF Core queries, database models, migrations, services, AJAX endpoints.
+
+**Model:** Per-task effort tag (low=fast, mid=standard, high=powerful).
+
+**Rule address book:**
+
+| When | Read |
+|------|------|
+| Any task | `ai-general/rules/code/cs/core.md` |
+| Any task | `ai-project/rules/code/cs/core.md` (if exists) |
+| Database / EF Core work | `ai-general/rules/code/cs/db.md` |
+| Database / EF Core work | `ai-project/rules/code/cs/db.md` (if exists) |
+| AJAX handler work | `ai-general/rules/code/cs/ajax.md` |
+| AJAX handler work | `ai-project/rules/code/cs/ajax.md` (if exists) |
+| File organization decisions | `ai-general/rules/code/cs/file-structure.md` |
+
+**Verification:** Run `dotnet build` after changes. Fix compilation errors before reporting done.
+
+### 3.5 DevJS
+
+**Purpose:** Frontend JavaScript development. OviPage classes, OviLibs components, OviForm, OviTable, OviRequest, client-side behavior.
+
+**Model:** Per-task effort tag.
+
+**Rule address book:**
+
+| When | Read |
+|------|------|
+| Any task | `ai-general/rules/code/js/core.md` |
+| Any task | `ai-project/rules/code/js/core.md` (if exists) |
+| OviLibs component work | `ai-general/rules/code/js/components.md` |
+| OviLibs component work | `ai-project/rules/code/js/components.md` (if exists) |
+| Table work | `ai-general/rules/code/js/tables.md` |
+| Table work | `ai-project/rules/code/js/tables.md` (if exists) |
+
+**Verification:** No JS console errors. Correct OviPage class structure.
+
+### 3.6 DevHTMLCSS
+
+**Purpose:** Razor CSHTML templates, SCSS styling, tag helpers (`ovi-*`), responsive layout. Implements UI specs from UXDesigner.
+
+**Model:** Per-task effort tag.
+
+**Rule address book:**
+
+| When | Read |
+|------|------|
+| Any task | `ai-general/rules/code/htmlcss/core.md` |
+| Any task | `ai-project/rules/code/htmlcss/core.md` (if exists) |
+| SCSS work | `ai-general/rules/code/htmlcss/styling.md` |
+| SCSS work | `ai-project/rules/code/htmlcss/styling.md` (if exists) |
+| Component/tag helper work | `ai-general/rules/code/htmlcss/components.md` |
+| Component/tag helper work | `ai-project/rules/code/htmlcss/components.md` (if exists) |
+
+**Verification:** Run `npm run build:css` after SCSS changes. Verify compiled output.
+
+### 3.7 UXDesigner
+
+**Purpose:** Layout planning, UX flows, element decisions. Thinks in high-level components (table, modal, dropdown, wizard) not HTML tags. Considers usability, user stories, and interaction patterns.
+
+**Model:** Per-task effort tag.
+
+**Readonly:** Yes. Outputs specs, never writes code.
+
+**Two operating stages:**
+
+1. **Plan stage** (spawned by Planner): High-level layout and flow decisions for UI features. Output goes into the plan file as UI specs attached to relevant tasks.
+2. **Execution stage** (spawned by DevLeader): Detailed element specs before DevHTMLCSS and DevJS start implementation. Output is a structured UI spec that both agents receive.
+
+**Rule address book:**
+
+| When | Read |
+|------|------|
+| Any task | `ai-project/overview.md` (project vibe, design direction) |
+| Any task | `ai-project/rules/ux/core.md` (design personality, color semantics, hierarchy, icons) |
+| Page layout decisions | `ai-project/rules/ux/page-layouts.md` (layout patterns per page type) |
+| Mobile/responsive decisions | `ai-project/rules/ux/mobile.md` (responsive behavior, touch targets) |
+| Component/element selection | `ai-project/rules/ux/components.md` (what component to use, button hierarchy, card variants) |
+| Any task | `ai-project/rules/code/htmlcss/components.md` (if exists, to know available implementation components) |
+| Any task | `ai-workspace/pages/` context files for similar existing pages (to maintain consistent UX patterns) |
+
+**After execution:** Write the UI Design section in the corresponding `ai-workspace/pages/` context file. This preserves layout decisions and UX rationale for future reference — when designing new similar pages, UXDesigner reads existing pages' UI Design sections to maintain consistency.
+
+**Output format:**
+```
+PAGE: [page name]
+LAYOUT:
+  - [section]: [description of what goes here]
+  - [section]: [description]
+ELEMENTS:
+  - [element type]: [purpose, behavior, data source]
+  - [element type]: [purpose, behavior, data source]
+INTERACTIONS:
+  - [trigger]: [action, expected result]
+NOTES: [usability considerations, edge cases]
+```
+
+### 3.8 Copywriter
+
+**Purpose:** User-facing text, localization keys (en/uk), notification messages, labels, tooltips. Maintains consistent tone of voice across the application.
+
+**Model:** Per-task effort tag (usually low — text changes are straightforward).
+
+**Rule address book:**
+
+| When | Read |
+|------|------|
+| Any task | `ai-project/rules/tone-of-voice.md` |
+| Any task | `ai-project/overview.md` (project vibe) |
+| Localization work | `ai-general/rules/code/localization.md` (if exists) |
+| Localization work | `ai-project/rules/code/localization.md` (if exists) |
+
+**Verification:** Both `en.json` and `uk.json` have identical key structures. No hardcoded strings remain.
+
+### 3.9 Auditor
+
+**Purpose:** Cross-cutting quality verification. Convention enforcement, localization parity, build verification. Runs after implementation groups complete.
+
+**Model:** Fast. Checklist-driven work, no complex reasoning needed.
+
+**Rule address book:**
+
+| When | Read |
+|------|------|
+| Always | ALL rules from `ai-general/rules/code/` relevant to changed file types |
+| Always | ALL rules from `ai-project/rules/code/` relevant to changed file types |
+
+**Workflow:**
+1. Receive list of changed files from DevLeader
+2. Read ai-workspace context for each changed file
+3. For each file type (C#, JS, SCSS, CSHTML), search for convention violations
+4. Fix violations directly (not just report)
+5. Run `dotnet build` after C# fixes (per `ai-project/config.md`)
+6. Run CSS/styling verification per `ai-project/config.md` (if applicable)
+7. Verify localization key parity between language files
+8. Report results
+
+**Failure-to-rule pipeline:** When cross-cutting verification finds a preventable issue not covered by existing rules, Auditor writes an `[auto]` entry to the appropriate `ai-project/rules/` file. See section 9.
+
+---
+
+## 4. Task Classification
+
+Every task has two independent dimensions.
+
+### 4.1 Effort (determines model)
+
+| Level | Meaning | Examples |
+|-------|---------|---------|
+| **low** | Pattern exists, copy-paste-adapt, no decisions needed | Fix typo, change color, add field to existing form, simple query |
+| **mid** | Clear approach, follows existing patterns with adaptation | New AJAX endpoint, add table column with sorting, new partial view, refactor method |
+| **high** | Architecture decisions, multiple valid approaches, edge cases | New multi-step wizard, complex business logic, data model redesign, new page from scratch |
+
+### 4.2 Scope (determines orchestration)
+
+| Level | Meaning | Orchestration chain |
+|-------|---------|---------------------|
+| **single** | One concern, 1-3 files | User -> Dev agent directly |
+| **multi** | Multiple concerns, one feature | User -> DevLeader -> Dev agents |
+| **bulk** | Many independent features/tasks | User -> Planner -> (user review) -> TaskRunner -> DevLeader(s) -> Dev agents |
+
+### 4.3 Model Tier Mapping
+
+Protocol-level (portable, model-agnostic):
+
+| Effort | Model tier |
+|--------|-----------|
+| low | fast |
+| mid | standard |
+| high | powerful |
+
+Project-level mapping (in `ai-project/config.md`):
+
+| Tier | Model ID |
+|------|----------|
+| fast | composer-2-fast |
+| standard | claude-sonnet-4 |
+| powerful | claude-opus-4.6 |
+
+Planner assigns effort tags during planning. DevLeader may reassess after technical investigation.
+
+---
+
+## 5. Task Flows
+
+### 5.1 Single Scope
+
+```
+User -> Dev agent
+```
+
+1. User describes the task directly in chat
+2. User picks agent type (or Cursor auto-delegates based on file context)
+3. Agent follows the general work protocol (section 6)
+4. Agent reports "ready"
+
+No orchestration overhead. For quick fixes and focused changes.
+
+### 5.2 Multi Scope
+
+```
+User -> DevLeader -> Dev agents
+```
+
+1. User describes the feature/task
+2. DevLeader reads ai-workspace context, investigates code
+3. DevLeader decomposes into subtasks with effort tags and agent assignments
+4. DevLeader spawns dev agents in dependency order
+5. DevLeader reviews results, handles failures
+6. DevLeader spawns Auditor for final check (optional, for important changes)
+7. DevLeader reports "ready"
+
+### 5.3 Bulk Scope
+
+```
+User -> /plan -> [discuss] -> Planner -> [self-validate] -> [user review] -> TaskRunner -> DevLeader(s) -> Dev agents
+```
+
+**Plan stage:**
+1. User provides chaotic task list (free-form text) via `/plan` command
+2. Discuss phase: in Plan Mode, identify gray areas and ask user targeted questions. Lock decisions into DECISIONS block. In Agent Mode, only ask critical ambiguities (max 2-3, all at once).
+3. Planner decomposes, maps dependencies, groups by context, assigns agents + effort
+4. If UI tasks exist, Planner spawns UXDesigner for high-level layout specs
+5. Planner self-validates (coverage, scope reduction, verify commands, dependencies, path aliases)
+6. Planner outputs structured plan to `ai-workspace/tasks/{task-name}/plan.md`
+7. User reviews and edits the plan
+8. User starts execution
+
+**Execute stage:**
+1. User starts TaskRunner, pointing it to the plan file
+2. TaskRunner reads the plan, identifies group execution order from DAG
+3. For each group (respecting dependencies):
+   a. TaskRunner spawns DevLeader with the group's tasks
+   b. DevLeader investigates, reassesses, spawns dev agents
+   c. DevLeader reports group result
+4. TaskRunner spawns Auditor for final cross-group verification
+5. TaskRunner reports overall status
+
+**Resume:** If `ai-workspace/tasks/{task-name}/state.md` exists from a previous interrupted execution, the user can resume from the last completed group/task.
+
+### 5.5 Quick Mode
+
+```
+User -> /quick -> Dev agent directly
+```
+
+For single, small tasks (1-3 files, low/mid effort, no UI decisions). Skips the full planning pipeline:
+1. Determine domain and select dev agent
+2. Spawn dev agent directly with task input as spec
+3. Agent follows standard work protocol (section 6)
+4. Agent reports directly to user
+
+If the task exceeds quick mode criteria (4+ files, multiple agents, UI decisions), refuse and redirect to `/plan`.
+
+### 5.4 Frontend Task Pipeline
+
+When a task involves UI (layout + template + behavior):
+
+```
+UXDesigner -> DevHTMLCSS -> DevJS
+              (template)    (behavior)
+```
+
+1. DevLeader spawns UXDesigner to produce a detailed UI spec
+2. DevLeader spawns DevHTMLCSS with the UI spec to build templates + SCSS
+3. DevLeader spawns DevJS with the UI spec + knowledge of DOM elements from DevHTMLCSS
+4. If DevJS has no DOM dependency (pure logic, AJAX calls), it can run parallel with DevHTMLCSS
+
+DevLeader coordinates this pipeline. DevHTMLCSS and DevJS receive the same UXDesigner output as part of their task spec.
+
+---
+
+## 6. Agent Work Protocol
+
+Every dev agent (DevCS, DevJS, DevHTMLCSS, Copywriter) follows this mandatory workflow.
+
+### 6.1 Mandatory Steps
+
+1. **Read task spec** — understand what to do, which files are involved
+2. **Read rules** — from rule address book, load only rules relevant to this task's domain
+   - Always: `ai-general/rules/code/{domain}/core.md`
+   - Always: `ai-project/rules/code/{domain}/core.md` (if exists)
+   - Conditionally: domain-specific rules based on task type (see agent's rule address book)
+3. **Check scaffold scripts** — if creating a new file from scratch, read `ai-general/scripts/overview.md`. Use an applicable script instead of writing boilerplate manually.
+4. **Read ai-workspace context** — for every file/page/service/controller mentioned in the task, read the corresponding context file from `ai-workspace/`
+5. **Plan code reads** — from context files, identify which actual code files and which line ranges to read. Do NOT read entire files.
+6. **Read code surgically** — read only the sections identified in step 5
+7. **Execute** — make the changes
+8. **Verify** — run the appropriate verification command (per `ai-project/config.md`):
+   - C# changes: `dotnet build`
+   - CSS/SCSS changes: per config (some repos use `npm run build:css`, others edit static CSS)
+   - Localization: check key parity
+   - JS: check for errors
+8a. **Self-review checklist** — before reporting done:
+   - [ ] Changes match task spec exactly (nothing extra, nothing missing)
+   - [ ] Build passes (ran verify command from task spec)
+   - [ ] No new lint warnings introduced
+   - [ ] No hardcoded values that should come from config/model
+   - [ ] No commented-out code left behind
+   - [ ] ai-workspace context file updated if structure changed
+   - [ ] Changes don't break existing functionality visible in ai-workspace dependencies
+9. **Update ai-workspace** — if the task changed file structure, added functions, changed dependencies, or altered a page's purpose, update the corresponding `ai-workspace/` context file
+10. **Report** — return result in the inter-agent format (see section 8.1)
+
+**Stuck detection and context rotation** are defined in `ai-general/rules/dev/overview.md`. Agents must follow deterministic rules for detecting loops and requesting fresh context when stuck.
+
+### 6.2 Context Loading Priority
+
+When context budget is limited, prioritize in this order:
+1. Task spec (always)
+2. Applicable rules (always)
+3. ai-workspace context files for target files (always)
+4. `ai-workspace/db/` context (when task touches DB/EF)
+5. Actual code sections identified from context (as needed)
+6. ai-workspace context for related/dependent files (if dependencies exist)
+
+---
+
+## 7. Agent File Structure
+
+Agent role files live in `ai-general/agents/roles/`. Each file follows a strict structure.
+
+### What Agent Files Contain
+
+- **Identity** — 2-3 lines: what the agent is, what domain it owns
+- **Work protocol** — step-by-step workflow specific to this role
+- **Input format** — what the agent expects to receive
+- **Output format** — what the agent returns
+- **Rule address book** — conditional pointers: "If task involves X, read Y"
+- **Constraints** — explicit NEVER/ALWAYS rules
+- **Error handling** — what to do when things go wrong
+
+### What Agent Files Do NOT Contain
+
+- Actual coding rules or conventions (those live in `ai-general/rules/` and `ai-project/rules/`)
+- Full code examples (those live in rule files)
+- Project-specific references (those live in `ai-project/`)
+
+### Target Size
+
+100-150 lines per agent file. If an agent file exceeds 200 lines, split rules into separate rule files and add pointers to the address book.
+
+### Rule Address Book Pattern
+
+```markdown
+## Rules — Read Before Working
+
+| When | Read |
+|------|------|
+| Any task | ai-general/rules/code/cs/core.md |
+| Any task | ai-project/rules/code/cs/core.md (if exists) |
+| Database / EF Core | ai-general/rules/code/cs/db.md |
+| Database / EF Core | ai-project/rules/code/cs/db.md (if exists) |
+| AJAX handlers | ai-general/rules/code/cs/ajax.md |
+```
+
+The "if exists" pattern allows `ai-general` to be portable. A new project won't have `ai-project/rules/code/cs/db.md` yet — the agent skips it. As the project accumulates learnings, that file gets created by the self-improvement mechanism.
+
+---
+
+## 8. Communication Protocols
+
+### 8.1 Inter-Agent: Task Spec (DevLeader -> Dev Agent)
+
+```
+TASK: [one-line description]
+EFFORT: low|mid|high
+FILES: [list of files to read/modify, from ai-workspace context]
+RULES: [list of rule files to read, from address book — only those relevant to this task]
+CONTEXT: [ai-workspace context file paths to read first]
+SPEC: |
+  [multi-line technical specification]
+  [what to implement, how, expected behavior]
+VERIFY: [how to verify success — build command, check to run]
+```
+
+No prose. No greetings. No "please" or "could you." Pure structured specification.
+
+### 8.2 Inter-Agent: Result (Dev Agent -> DevLeader)
+
+```
+STATUS: done|blocked|failed|needs-other|rotate
+CHANGES: [list of files changed with brief description of change]
+ISSUES: [problems encountered, empty if none]
+WS_UPDATED: [list of ai-workspace context files updated, empty if none]
+BLOCKED_BY: [what's blocking, only if STATUS is blocked]
+FAILED_REASON: [why it failed, only if STATUS is failed]
+NEEDS_FROM: [agent type needed, only if STATUS is needs-other]
+NEEDS_SPEC: [what the other agent must do, only if STATUS is needs-other]
+PROGRESS: [what's done, only if STATUS is rotate]
+RESUME_FROM: [where to continue, only if STATUS is rotate]
+RULES_ADDED: [{file path}: {one-line description}, only if [auto] rules were written]
+```
+
+**`needs-other` status:** The agent discovered that work outside its speciality is missing or incomplete. It cannot finish until another agent handles the request. DevLeader routes the request to the correct agent, then resumes the original agent with the result.
+
+**`rotate` status:** The agent's context is exhausted (too many files read, repeated failures). It saves state and requests a fresh agent to continue. DevLeader reads PROGRESS/RESUME_FROM, spawns a fresh agent with the original spec plus a progress summary. Max 2 rotations per task.
+
+Example: DevJS needs a data attribute on a button that DevHTMLCSS forgot to add.
+```
+STATUS: needs-other
+CHANGES: []
+NEEDS_FROM: dev-htmlcss
+NEEDS_SPEC: Add data-action="withdraw" attribute to the submit button in Pages/Withdrawals/Index.cshtml, line ~45
+```
+
+### 8.3 Inter-Agent: Group Result (DevLeader -> TaskRunner)
+
+```
+GROUP: [group name/id]
+STATUS: done|blocked|failed
+TASKS_COMPLETED: [count]
+TASKS_TOTAL: [count]
+PLAN_CHANGES: [list of effort/task modifications DevLeader made, empty if none]
+ISSUES: [unresolved problems, empty if none]
+RULES_ADDED: [{file path}: {one-line description}, only if [auto] rules were written]
+```
+
+### 8.4 Agent-to-User Communication
+
+The user is a professional developer. Agents follow these rules for ALL user-facing output:
+
+**Default behavior:**
+- When task is done with no issues: respond "ready"
+- When task is done and user needs to know something specific: state the fact in one line, no preamble
+- When blocked: state the blocker, what's needed, nothing else
+
+**NEVER do:**
+- Summarize what was done (user can see the diff)
+- Explain code that was written (code speaks for itself)
+- Use phrases: "I'll now...", "Let me...", "Here's what I did...", "Great question!", "Sure!"
+- Provide tutorials or explanations of technologies
+- Add encouraging or filler text
+- Repeat the task back to the user
+
+**ONLY report:**
+- Errors that couldn't be auto-fixed
+- Decisions where multiple valid approaches exist (state choice + one-line reason)
+- Blockers that require user input
+- Questions when task spec is ambiguous
+
+**Format for decisions:**
+```
+Decision: [what was decided]
+Reason: [one line why]
+```
+
+**Format for blockers:**
+```
+Blocked: [what's blocking]
+Need: [what's needed from user]
+```
+
+---
+
+## 9. Self-Improvement Mechanism
+
+Two paths for accumulating project-specific learnings into `ai-project/rules/`.
+
+### 9.1 User-Triggered Path
+
+**Trigger:** User corrects an agent's output and indicates the correction should become a rule ("update the rule", "remember this", "don't do this again").
+
+**Process:**
+1. Agent identifies which rule file the correction applies to (domain + topic)
+2. Agent proposes the exact change — shows the text to add or modify
+3. User confirms or adjusts
+4. Agent writes the update to the appropriate file in `ai-project/rules/`
+5. Agent appends entry to `ai-workspace/changelog.md`
+
+### 9.2 Agent-Triggered Path
+
+**Trigger:** DevLeader or Auditor identifies a repeatable failure pattern during execution.
+
+**Process:**
+1. Identify which rule file the pattern applies to (domain + topic)
+2. Write the entry directly to `ai-project/rules/` — tag with `[auto]` to mark as agent-authored
+3. Include the "why" derived from the failure context
+4. Log in `ai-workspace/changelog.md`
+5. Include in result: `RULES_ADDED: [{file path}: {one-line description}]`
+
+No user confirmation needed. `[auto]` entries are reviewed later:
+- Remove `[auto]` tag → approve as permanent rule
+- Delete entry → was a one-off, not worth keeping
+
+| Who | When |
+|-----|------|
+| Dev-leader | Dev agent reports `failed` or `blocked` with a cause likely to recur |
+| Auditor | Cross-cutting verification finds a preventable issue |
+| User | Corrects an agent and says "remember this" (no `[auto]` tag) |
+
+### 9.3 Guardrails
+
+- NEVER modify files in `ai-general/` — the portable core stays clean
+- NEVER delete existing rules — only add or refine
+- If the correction contradicts an existing rule in `ai-general/`, flag the conflict to the user instead of silently overriding
+- `ai-project/rules/` entries take precedence over `ai-general/rules/` when both exist for the same topic (project-specific overrides generic)
+- Each new rule entry must include the "why" derived from the correction or failure
+
+---
+
+## 10. Workspace Context Auto-Generation
+
+### Purpose
+
+`ai-workspace/` context files are the primary mechanism for token efficiency. They give agents a lightweight map of the codebase so they can read surgically instead of loading full files.
+
+### Generation
+
+A dedicated command (`/scan` or similar) scans the project and generates context files:
+
+1. Scan `Pages/` — generate one context file per page folder
+2. Scan services — generate one context file per service class
+3. Scan controllers — generate one context file per controller
+4. Scan helpers/utilities — generate one context file per helper class
+5. Mirror the project's folder structure inside `ai-workspace/`
+
+### Maintenance
+
+Dev agents update context files as a mandatory final step (step 8 of the work protocol). When a dev agent:
+- Adds a new function → add it to the context file (name, line, input, output, purpose)
+- Removes a function → remove it from the context file
+- Changes a function's signature (params or return type) → update input/output columns
+- Changes a function's purpose → update the description
+- Adds a new dependency → add it to the dependencies list
+- Changes file structure → update the files section
+
+### Context File Content
+
+Each context file contains (see format in section 12.4):
+- File paths (view, model, JS, SCSS)
+- One-line purpose
+- Key user stories
+- Key functions with name, line number, input/output, and one-line purpose
+- Dependencies (services, models, partials, other pages)
+
+These files are intentionally short (30-60 lines). They exist to answer: "What does this page/service do, where is its code, and what functions matter?"
+
+---
+
+## 11. Frontend Task Pipeline
+
+### The Problem
+
+Frontend UI tasks span three concerns: layout decisions (what elements, where), template implementation (CSHTML + SCSS), and behavior (JS). Putting all three in one agent overloads its context with mixed rules.
+
+### The Solution
+
+Split into a pipeline with UXDesigner feeding DevHTMLCSS and DevJS.
+
+### Pipeline
+
+```
+DevLeader
+  |
+  +--> UXDesigner (produces UI spec)
+  |
+  +--> DevHTMLCSS (implements template + SCSS from UI spec)
+  |
+  +--> DevJS (implements behavior from UI spec + DOM knowledge)
+```
+
+### UXDesigner — Two Operating Stages
+
+**Stage 1: Plan-time (with Planner)**
+- Planner spawns UXDesigner during bulk planning
+- UXDesigner makes high-level layout decisions: "this page needs a data table, a filter bar, and an edit modal"
+- Output is attached to relevant tasks in the plan file
+- Purpose: give Planner enough UI understanding to estimate effort and dependencies
+
+**Stage 2: Execution-time (with DevLeader)**
+- DevLeader spawns UXDesigner before implementation starts
+- UXDesigner produces detailed element specs: what each section contains, interaction patterns, data sources
+- Output is passed to both DevHTMLCSS and DevJS as part of their task specs
+- Purpose: both front-end agents work from the same source of truth
+
+### Parallelization Rules
+
+- DevHTMLCSS ALWAYS runs before DevJS when JS needs specific DOM elements or data attributes
+- DevJS CAN run parallel with DevHTMLCSS when JS work is purely logic/AJAX with no DOM dependency
+- DevLeader determines parallelizability based on the UI spec
+
+---
+
+## 12. File Format Specifications
+
+Strict formats for all protocol files. Every file in the system follows one of these formats.
+
+### 12.1 Agent Role File
+
+Location: `ai-general/agents/roles/{agent-name}.md`
+
+```markdown
+# {Agent Name}
+
+## Identity
+
+[2-3 lines: what this agent is, what domain it owns, what it does NOT do]
+
+## Workflow
+
+1. [First step]
+2. [Second step]
+3. [...]
+
+## Input Format
+
+[What this agent expects to receive — reference inter-agent format if applicable]
+
+## Output Format
+
+[What this agent returns — reference inter-agent format if applicable]
+
+## Rules — Read Before Working
+
+| When | Read |
+|------|------|
+| [condition] | [file path] |
+| [condition] | [file path (if exists)] |
+
+## Constraints
+
+- NEVER [prohibited action]
+- NEVER [prohibited action]
+- ALWAYS [required behavior]
+- ALWAYS [required behavior]
+
+## Error Handling
+
+RECOVERABLE (handle automatically):
+- [error]: [action]
+
+UNRECOVERABLE (stop and report to parent):
+- [error]: [what to report]
+```
+
+**Rules:**
+- Max 150 lines
+- No coding rules in the file — use rule address book pointers
+- No project-specific references — keep portable
+- Every constraint must be actionable and verifiable
+
+### 12.2 Rule File
+
+Location: `ai-general/rules/code/{domain}/{topic}.md` or `ai-project/rules/code/{domain}/{topic}.md`
+
+```markdown
+# {Rule Title}
+
+## Purpose
+
+[One sentence: what this rule enforces and why it exists]
+
+## Applies To
+
+[What files/situations this rule covers]
+
+## Rules
+
+[Imperative instructions. Use tables for mapping.]
+
+| Need | Correct | Wrong |
+|------|---------|-------|
+| [situation] | [do this] | [not this] |
+
+## Examples
+
+[1-2 concrete code examples maximum]
+
+## Constraints
+
+- NEVER [specific prohibited action]
+- ALWAYS [specific required action]
+```
+
+**Rules:**
+- Max 300 lines per rule file (split if larger)
+- Imperative language only — no "consider", "try to", "you might"
+- Include both DO and DO NOT
+- 1-2 examples maximum — one teaches, more waste tokens
+- Every sentence must constrain or guide behavior. If removing a line doesn't change agent behavior, delete it.
+
+### 12.3 Task/Plan File
+
+Location: `ai-workspace/tasks/{task-name}/plan.md`
+
+See `ai-general/formats/plan.md` for the authoritative template. Key elements:
+
+- **Decisions block** (optional, if discuss phase ran): table of gray areas, decisions made, and alternatives considered
+- **Groups** with dependency declarations and parallelization info
+- **Tasks** with effort, agents, files (using path aliases), spec, depends_on, and structured verify (command + expect + optional fallback)
+
+**Rules:**
+- One plan file per bulk task set
+- Tasks are grouped by context similarity
+- Every task has an explicit effort tag
+- Dependencies are explicit (task IDs)
+- Specs describe WHAT to do, not HOW (agents make implementation decisions)
+- File paths use aliases from `ai-project/config.md` (e.g. `db/Models/...` not full path)
+- Verify fields must contain `command` + `expect`; add `fallback` when no automated check exists
+- Plans must NOT use scope reduction language ("simplified", "basic for now", "future enhancement")
+
+### 12.4 Workspace Context File
+
+Location: `ai-workspace/{category}/{path-mirroring-project}/{name}.md`
+
+Example: `ai-workspace/pages/BrokerAccounts/Index.md`
+
+```markdown
+# {Page/Service/Controller Name}
+
+## Purpose
+
+[One-line: what this page/service does from the user's perspective]
+
+## Files
+
+| Role | Path |
+|------|------|
+| view | {relative path to .cshtml} |
+| model | {relative path to .cshtml.cs} |
+| js | {relative path to .js} |
+| scss | {relative path to .scss, if exists} |
+| models | {relative path to Models file, if exists} |
+
+## User Stories
+
+- User can [action 1]
+- User can [action 2]
+
+## Key Functions
+
+| Name | Line | Input | Output | Purpose |
+|------|------|-------|--------|---------|
+| {FunctionName} | {line number} | {params or "none"} | {return type/shape} | {one-line description} |
+| {FunctionName} | {line number} | {params or "none"} | {return type/shape} | {one-line description} |
+
+## Dependencies
+
+| Type | Name | Path |
+|------|------|------|
+| service | {ServiceName} | {relative path} |
+| model | {ModelName} | {relative path} |
+| partial | {PartialName} | {relative path} |
+| page | {PageName} | {relative path, if cross-page dependency} |
+
+## UI Design (pages and UI components only)
+
+Layout: [brief description of page layout structure]
+Elements:
+- [element type]: [what it shows, why it's here]
+- [element type]: [what it shows, why it's here]
+Patterns:
+- [UX pattern used]: [why this pattern was chosen over alternatives]
+Notes: [any design decisions, constraints, or rationale worth preserving]
+```
+
+**Rules:**
+- Max 80 lines per context file (pages with UI Design section get extra room)
+- Line numbers must be kept current (updated after structural changes)
+- Purpose is from the USER's perspective, not technical
+- Only list functions that matter for understanding the page — skip trivial getters/formatters
+- UI Design section is mandatory for pages and UI components, omit for services/helpers/controllers
+- UXDesigner writes the UI Design section after execution. This section serves as a reference for future pages to maintain consistent layout patterns and UX decisions.
+
+### 12.5 Project Config File
+
+Location: `ai-project/config.md`
+
+```markdown
+# Project Configuration
+
+## Model Tiers
+
+| Tier | Model ID |
+|------|----------|
+| fast | {model-id} |
+| standard | {model-id} |
+| powerful | {model-id} |
+
+## Build Commands
+
+| Domain | Command | Working Directory |
+|--------|---------|-------------------|
+| C# | dotnet build | {path} |
+| SCSS | npm run build:css | {path} |
+
+## Project Paths
+
+Paths are relative to the repository root. Alias is used as a short prefix in plans and task specs.
+
+| Alias | What | Path |
+|-------|------|------|
+| {alias} | {description} | {path} |
+
+## Localization
+
+| Language | File |
+|----------|------|
+| {code} | {path} |
+| {code} | {path} |
+```
+
+### 12.6 Agent Index File
+
+Location: `ai-general/agents/index.md`
+
+```markdown
+# Agent Index
+
+## Dev Agents — When to Assign
+
+- If the task involves C# code, PageModel handlers, EF Core queries,
+  database models, services, migrations, or AJAX endpoints
+  -> use **dev-cs**
+
+- If the task involves JavaScript, page classes, forms, tables,
+  AJAX calls, or client-side behavior
+  -> use **dev-js**
+
+- If the task involves Razor CSHTML templates, SCSS styling, tag helpers,
+  layout structure, or responsive design
+  -> use **dev-htmlcss**
+
+- If the task involves user-facing text, labels, notifications,
+  localization keys, or tone of voice
+  -> use **copywriter**
+
+- If the task involves UI/UX decisions — what elements to use,
+  page layout, user flow, interaction design
+  -> use **ux-designer** before dev-htmlcss and dev-js
+
+- If the task touches multiple layers (e.g. C# + JS + CSHTML)
+  -> assign multiple agents. Typical order: dev-cs first, then dev-htmlcss, then dev-js
+
+## Quality Agents
+
+- After a group of tasks completes, or for important changes
+  -> use **auditor** for cross-cutting verification
+
+## Effort -> Model Tier
+
+- If effort is **low** (pattern exists, obvious approach, single concern)
+  -> spawn agent with model tier: fast
+
+- If effort is **mid** (clear approach, adapts existing patterns, moderate complexity)
+  -> spawn agent with model tier: standard
+
+- If effort is **high** (architecture decision, complex logic, multiple valid approaches, risk)
+  -> spawn agent with model tier: powerful
+
+## Orchestration Agents
+
+| Agent | Model | When |
+|-------|-------|------|
+| planner | powerful | Bulk scope — user invokes to create execution plan |
+| task-runner | fast | Bulk scope — dispatches plan groups to DevLeaders |
+| dev-leader | powerful | Multi/bulk scope — technical orchestration per group |
+```
+
+---
+
+## 13. Error Handling
+
+### 13.1 Dev Agent Errors
+
+**Recoverable (agent handles automatically):**
+- Build fails after change → read error, fix, rebuild
+- Lint error introduced → fix and re-verify
+- File not found at expected path → search using ai-workspace context, update context file
+- ai-workspace context file outdated (line numbers wrong) → read actual file, update context
+
+**Unrecoverable (agent stops, reports to parent):**
+- Task spec is ambiguous — cannot determine what to do → report `blocked` with clarification needed
+- Required dependency missing (service/model doesn't exist yet) → report `blocked` with dependency info
+- Change would break other functionality → report `blocked` with impact description
+- Cannot verify success (build environment broken) → report `failed` with error details
+
+### 13.2 Stuck Detection
+
+Deterministic rules for detecting agent loops (defined in `ai-general/rules/dev/overview.md`):
+
+| Pattern | After | Action |
+|---------|-------|--------|
+| Same build error | 2 fix attempts | Try different approach |
+| Same build error | 3 fix attempts | Report `rotate` |
+| Same lint error | 2 fix attempts | Try different approach |
+| Same lint error | 3 fix attempts | Report `rotate` |
+| File modified then reverted | 2 cycles | Report `blocked` |
+| Verification fails after implementation | 3 attempts | Report `blocked` |
+
+**Escalation chain:**
+```
+Try different approach (agent handles)
+  ↓ still failing
+Report rotate (fresh context continues)
+  ↓ still failing after fresh context
+Report blocked (dev-leader decides)
+  ↓ dev-leader can't resolve
+Escalate to user
+```
+
+### 13.3 DevLeader Error Handling
+
+- Dev agent reports `blocked` → check if another task provides the dependency, reorder; if not, escalate to user
+- Dev agent reports `failed` → analyze failure, attempt once to fix by re-specifying the task; if second attempt fails, escalate to user. If failure pattern is repeatable, write `[auto]` rule (see section 9.2).
+- Dev agent reports `needs-other` → handle cross-agent request (see 13.5)
+- Dev agent reports `rotate` → read PROGRESS/RESUME_FROM, spawn fresh agent with original spec + progress summary. Max 2 rotations per task.
+- Multiple agents fail in same group → stop group, escalate to user with full context
+
+### 13.5 Cross-Agent Requests
+
+When a dev agent reports `needs-other`, DevLeader handles the handoff:
+
+1. Read the `NEEDS_FROM` and `NEEDS_SPEC` from the result
+2. Spawn (or resume) the requested agent with a targeted task spec containing only the missing work
+3. Wait for that agent to complete
+4. Resume the original agent, passing the result: what was changed, which files were updated
+5. Original agent finishes its work and reports final status
+
+**Flow example:**
+```
+DevLeader spawns DevHTMLCSS → done
+DevLeader spawns DevJS → needs-other (needs dev-htmlcss to add data attribute)
+  DevLeader spawns DevHTMLCSS with targeted fix → done
+  DevLeader resumes DevJS with fix confirmation → done
+```
+
+**Guardrails:**
+- Max 2 cross-agent request rounds per task. If still unresolved after 2, escalate to user.
+- DevLeader logs each cross-agent request in the group result (`PLAN_CHANGES`) so patterns of missing work can be addressed in rules.
+
+### 13.4 TaskRunner Error Handling
+
+- DevLeader reports `blocked` for a group → pause execution, notify user with group context
+- DevLeader reports `failed` → stop execution of dependent groups, notify user
+- Independent groups continue even if one group fails
+
+---
+
+## 14. .cursor/ Integration
+
+### How .cursor/rules/ connects to the protocol
+
+`.cursor/rules/*.mdc` files are thin and auto-loaded by Cursor. Their job is to:
+1. Provide minimal always-on conventions (the most critical rules that apply to every interaction)
+2. Direct agents to read `ai-general/` and `ai-project/` rules for full detail
+
+Example `.cursor/rules/core-always.mdc`:
+```
+---
+description: Core conventions — always applied
+alwaysApply: true
+---
+# Core Conventions
+
+[Minimal critical rules here — max 500 tokens]
+
+For full coding rules, ALWAYS read the relevant files:
+- C# work: ai-general/rules/code/cs/core.md + ai-project/rules/code/cs/core.md (if exists)
+- JS work: ai-general/rules/code/js/core.md + ai-project/rules/code/js/core.md (if exists)
+- CSHTML/SCSS work: ai-general/rules/code/htmlcss/core.md + ai-project/rules/code/htmlcss/core.md (if exists)
+```
+
+### How .cursor/agents/ connects to agent roles
+
+`.cursor/agents/` subagent files are thin wrappers. Their frontmatter makes them discoverable by Cursor. Their body points to the full role definition:
+
+```markdown
+---
+name: dev-cs
+description: "Backend C# developer. Use for PageModel handlers, EF Core queries, database models, services, AJAX endpoints."
+model: inherit
+---
+
+Read your full role definition from ai-general/agents/roles/dev-cs.md before starting any task.
+Follow the work protocol defined there exactly.
+```
+
+The actual role logic stays in `ai-general/agents/roles/` — portable, detailed, and not limited by `.cursor/agents/` conventions.
+
+---
+
+## 15. Scaffolding Scripts
+
+### Purpose
+
+Eliminate token waste on repetitive boilerplate. Instead of agents writing the same skeleton code for every new page, service, or controller, they run a scaffolding script that generates the files and then modify the output.
+
+### Architecture
+
+```
+ai-general/scripts/          — Portable Python scripts (engine logic)
+  overview.md                — Index: what scripts exist, when to use each one
+  lib/scaffold_utils.py      — Shared utilities (config, templates, file ops)
+  new_page.py                — Create new page (CSHTML + CS + JS + folders + nav)
+  add_handler.py             — Add AJAX handler to existing PageModel
+  add_service.py             — Create service (interface + impl + Program.cs registration)
+  add_controller.py          — Create new MVC controller
+  add_controller_method.py   — Add method to existing controller
+
+ai-project/scripts/          — Project-specific config and templates
+  config.json                — Project paths, namespace patterns
+  templates/                 — Jinja2 templates for all generated files
+```
+
+Scripts in `ai-general/` are portable — they read project-specific paths from `ai-project/scripts/config.json` and use templates from `ai-project/scripts/templates/`.
+
+### Mandatory Rule
+
+All dev agents MUST check `ai-general/scripts/overview.md` before creating any file from scratch. If an applicable scaffold script exists, use it. Only hand-write if:
+- No script exists for this file type
+- The generated output would need >80% manual modification
+
+This rule is enforced in the agent work protocol (step 3) and in each dev agent's constraints.
+
+### Effort Impact
+
+Tasks that use scaffolding scripts drop one effort level:
+- "New page from scratch" → mid (was high), because the skeleton is handled
+- "Add AJAX handler" → low (was low, but faster and error-free)
+
+### Scaffolder Agent
+
+The **scaffolder** agent creates and maintains scaffold scripts and templates. It is spawned when:
+- A repeatable pattern is identified across 3+ agent tasks
+- Templates need updating because conventions changed
+- User requests a new scaffold script
+
+The scaffolder does NOT write application code — it only creates tools that other agents use.
+
+### Adding New Scripts
+
+When a new repeatable pattern is identified:
+
+1. Scaffolder reads 2-3 real examples from the codebase
+2. Extracts the variable parts (names, paths, namespaces)
+3. Creates Jinja2 template in `ai-project/scripts/templates/`
+4. Creates Python script in `ai-general/scripts/`
+5. Updates `ai-general/scripts/overview.md`
+6. Tests with `--dry-run`

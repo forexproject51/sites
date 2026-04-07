@@ -1,0 +1,13 @@
+---
+description: Core protocol — always applied (all roles)
+alwaysApply: true
+---
+# Core
+
+**User-facing replies:** MUST follow `ai-general/communication/user-protocol.md` — no exceptions.
+
+**Before work:** Read `ai-general/agents/roles/{your-role}.md` and only the workflows your role uses (e.g. dev agents: `ai-general/rules/dev/overview.md`).
+
+## Inter-agent messages (MANDATORY)
+
+When the audience is another agent, orchestrator, or subagent (not the user): open `ai-general/communication/agent-protocol.md`, pick the section that matches the situation, and output **only** the block format defined there — no paraphrase, no extra narrative, no alternate layout. If no section fits, state that in one line and stop; do not invent a format.

@@ -1,0 +1,17 @@
+{
+  "appRoot": "NexlotCabinetWeb/NexlotCabinetWeb",
+  "namespace": "NexlotCabinetWeb",
+  "paths": {
+    "pages": "Pages",
+    "js": "wwwroot/js/pages",
+    "services": "Services",
+    "controllers": "Controllers",
+    "programCs": "Program.cs"
+  },
+  "nav": {
+    "desktopNav": "Pages/Shared/_topbar.cshtml",
+    "desktopNavInsertMarker": "id=\"topbar-nav-menu\"",
+    "mobileNav": "Pages/Shared/_horizontal_nav.cshtml",
+    "mobileNavInsertMarker": "class=\"navbar-nav\""
+  }
+}

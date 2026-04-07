@@ -1,0 +1,22 @@
+
+    // ── {{ handler_name }} ─────────────────────────────────────────────────────────
+{% if method == "post" %}
+{% if with_body %}
+    public async Task<IActionResult> OnPost{{ handler_name }}Async([FromBody] {{ with_body }} input)
+{% else %}
+    public async Task<IActionResult> OnPost{{ handler_name }}Async()
+{% endif %}
+{% else %}
+{% if with_body %}
+    public async Task<IActionResult> OnGet{{ handler_name }}Async([FromBody] {{ with_body }} input)
+{% else %}
+    public async Task<IActionResult> OnGet{{ handler_name }}Async()
+{% endif %}
+{% endif %}
+    {
+        if (!this.IsSignedIn()) return this.ResultForbidden();
+
+        // TODO: implement
+
+        return OviRequestResult.Success("Done");
+    }

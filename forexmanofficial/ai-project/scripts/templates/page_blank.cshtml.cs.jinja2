@@ -1,0 +1,29 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
+using NexlotCabinetWeb.Extentions;
+using NexlotCabinetWeb.Localization;
+
+namespace {{ namespace }}
+{
+    [Authorize]
+    public class {{ class_name }} : PageModel
+    {
+        private readonly ILogger<{{ class_name }}> logger;
+        private readonly IStringLocalizer<SharedResource> localizer;
+
+        public {{ class_name }}(
+            ILogger<{{ class_name }}> loggerArg,
+            IStringLocalizer<SharedResource> localizerArg)
+        {
+            logger    = loggerArg;
+            localizer = localizerArg;
+        }
+
+        public IActionResult OnGet()
+        {
+            return Page();
+        }
+    }
+}

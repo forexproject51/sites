@@ -1,0 +1,13 @@
+class {{ js_class_name }} extends OviPage {
+
+    // ── State ─────────────────────────────────────────────────────────────────
+
+    // ── Bootstrap ─────────────────────────────────────────────────────────────
+    init() {
+        super.init();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    new {{ js_class_name }}().init();
+});

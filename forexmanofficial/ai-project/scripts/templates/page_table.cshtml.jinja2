@@ -1,0 +1,58 @@
+@page
+@model {{ namespace }}.{{ class_name }}
+@{
+    ViewData["Title"] = "{{ title }}";
+    ViewData["PageBg"] = "dashboard";
+    ViewBag.pTitle    = "{{ title }}";
+    ViewBag.pageTitle = "Home";
+}
+
+<div data-ovi-page>
+
+    @* Hidden form — provides antiforgery token for AJAX POSTs *@
+    <form method="post" class="d-none" data-af-form></form>
+
+    @* ─── Table ────────────────────────────────────────────────────────────── *@
+    <div class="mb-4">
+        <div class="card nexlot-table-card">
+            <div class="card-header bg-transparent border-bottom">
+                <form data-ovi-table-filters="{{ table_id }}">
+                    <div class="row align-items-center g-2">
+                        <div class="col-12">
+                            <div class="row g-2 justify-content-lg-end align-items-center">
+                                @foreach (var f in Model.TableConfig.TableFilters)
+                                {
+                                    <div class="col-12 col-sm-6 col-lg-3 @f.ExtraSizeClasses">
+                                        <partial name="Shared/Components/_TableFilterItem" model="f"/>
+                                    </div>
+                                }
+                                <div class="col-12 col-sm-auto">
+                                    <div class="btn-group ovi-table-header-btns">
+                                        <partial name="Shared/Components/_SearchButton"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card-body py-3 px-3">
+                <div class="nexlot-table-wrapper" data-nexlot-table-wrapper="{{ table_id }}">
+                    <partial name="Shared/Components/_Table" model="@Model.TableConfig"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section styles {
+    <partial name="OviTableSupport/_OviTablePageStyles" />
+}
+
+@section scripts {
+    <partial name="OviTableSupport/_OviTablePageScripts" />
+    <partial name="Shared/Components/_NexlotTableOverrides" />
+    <script src="{{ js_rel_path }}"></script>
+}
