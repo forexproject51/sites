@@ -1,0 +1,11 @@
+/*.js
+  Content-Type: application/javascript; charset=utf-8
+
+/*.mjs
+  Content-Type: application/javascript; charset=utf-8
+
+/framerusercontent.com/sites/*/*.js
+  Content-Type: application/javascript; charset=utf-8
+
+/edit.framer.com/*.js
+  Content-Type: application/javascript; charset=utf-8

@@ -1,5 +1,17 @@
-# Add correct MIME types for JavaScript modules
-AddType text/javascript .js .mjs
+# MIME types for JavaScript (including ES modules)
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+  AddType application/javascript .mjs
+  AddType text/javascript .js
+  AddType text/javascript .mjs
+</IfModule>
+
+# Fallback: force correct type for module files
+<FilesMatch "\.(mjs|js)$">
+  <IfModule mod_headers.c>
+    Header set Content-Type "application/javascript; charset=utf-8"
+  </IfModule>
+</FilesMatch>
 
 # Enable CORS if needed
 <IfModule mod_headers.c>

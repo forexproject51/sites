@@ -41,3 +41,36 @@ Get free Forex signals today
 
 
 Join Free on Telegram
+
+# DL9
+
+1. 95% изменить на 87%
+
+
+2. Изменить заголовок:
+
+Trusted by 10,000+ traders worldwide
+
+
+3. Изменить под заголовок:
+
+Thousands of traders already use our signals to spot opportunities, copy trades, and grow their accounts - every single day.
+
+
+4. Изменить СТА:
+
+Join Free on Telegram
+
+
+# DL1
+
+
+1. 95% изменить на 87%
+
+
+2. Изменить под заголовок:
+
+Thousands of traders already use our signals to spot opportunities, copy trades, and grow their accounts - every single day.
+
+
+3. Убрать текст под кнопкой
