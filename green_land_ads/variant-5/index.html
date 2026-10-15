@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Learning community</title>
+  <meta name="description" content="Educational learning community for market basics.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Unbounded:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #050505;
+  color: #ffffff;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+.font-display { font-family: 'Unbounded', sans-serif; }
+.footer-legal-link {
+  color: #4b5563;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-size: 10px;
+}
+.footer-legal-link:hover { color: #00ff66; }
+.footer-cookie-btn {
+  background: none; border: none; padding: 0; font: inherit;
+  font-size: 10px; color: #4b5563; text-decoration: underline;
+  text-underline-offset: 2px; cursor: pointer;
+}
+.footer-cookie-btn:hover { color: #00ff66; }
+.privacy-modal {
+  position: fixed; inset: 0; z-index: 2147483647;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.privacy-modal[hidden] { display: none; }
+.privacy-modal__backdrop {
+  position: absolute; inset: 0; background: rgba(5,5,5,0.88); backdrop-filter: blur(4px);
+}
+.privacy-modal__panel {
+  position: relative; width: 100%; max-width: 720px; max-height: min(85vh, 800px);
+  display: flex; flex-direction: column; background: #0d0d11;
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5); overflow: hidden;
+}
+.privacy-modal__header {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0;
+}
+.privacy-modal__title {
+  font-family: 'Unbounded', sans-serif; font-size: 20px; font-weight: 700; color: #fff;
+}
+.privacy-modal__close {
+  flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center;
+  justify-content: center; border-radius: 8px; color: #9ca3af; font-size: 22px;
+  line-height: 1; background: transparent; border: none; cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.privacy-modal__close:hover { color: #fff; background: rgba(255,255,255,0.06); }
+.privacy-modal__body {
+  padding: 24px; overflow-y: auto; font-size: 14px; line-height: 1.65; color: #9ca3af;
+  -webkit-user-select: text; user-select: text;
+}
+.privacy-modal__body h3 {
+  margin: 24px 0 8px; font-family: 'Unbounded', sans-serif; font-size: 15px;
+  font-weight: 600; color: #fff;
+}
+.privacy-modal__body h3:first-of-type { margin-top: 0; }
+.privacy-modal__body p { margin-bottom: 12px; }
+.privacy-modal__body ul { list-style: disc; padding-left: 20px; margin-bottom: 12px; }
+.privacy-modal__body li { margin-bottom: 6px; }
+.privacy-modal__body a { color: #00ff66; text-decoration: underline; text-underline-offset: 2px; }
+.privacy-modal__body strong { color: #e5e7eb; }
+.privacy-modal__meta { font-size: 12px; color: #6b7280; margin-bottom: 16px; }
+.privacy-modal__footer {
+  display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+  padding: 16px 24px; border-top: 1px solid rgba(255,255,255,0.1); flex-shrink: 0;
+}
+.privacy-modal__footer .btn-secondary {
+  font-size: 13px; padding: 10px 18px; border-radius: 12px;
+  border: 1px solid rgba(0,255,102,0.5); background: transparent; color: #00ff66;
+  font-family: 'Unbounded', sans-serif; font-weight: 700; cursor: pointer;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.privacy-modal__footer .btn-secondary:hover { background: rgba(0,255,102,0.1); }
+.privacy-modal__footer .btn-primary {
+  font-size: 13px; padding: 10px 22px; border-radius: 12px; border: none;
+  background: #00ff66; color: #000; font-family: 'Unbounded', sans-serif; font-weight: 700;
+  cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em;
+  box-shadow: 0 0 20px rgba(0,255,102,0.3); transition: background 0.2s ease;
+}
+.privacy-modal__footer .btn-primary:hover { background: #00e65c; }
+#cc-main {
+  --cc-z-index: 2147483646;
+  --cc-font-family: 'Inter', sans-serif;
+  --cc-bg: #0d0d11;
+  --cc-primary-color: #ffffff;
+  --cc-secondary-color: #9ca3af;
+  --cc-btn-primary-bg: #00ff66;
+  --cc-btn-primary-color: #050505;
+  --cc-btn-primary-border-color: #00ff66;
+  --cc-btn-primary-hover-bg: #00e65c;
+  --cc-btn-primary-hover-border-color: #00e65c;
+  --cc-btn-primary-hover-color: #050505;
+  --cc-btn-secondary-bg: #15151a;
+  --cc-btn-secondary-color: #ffffff;
+  --cc-btn-secondary-border-color: rgba(255,255,255,0.1);
+  --cc-btn-secondary-hover-bg: #1c1c22;
+  --cc-btn-secondary-hover-color: #ffffff;
+  --cc-toggle-on-bg: #00ff66;
+  --cc-toggle-off-bg: #64748b;
+  --cc-toggle-readonly-bg: #343e45;
+  --cc-toggle-on-knob-bg: #050505;
+  --cc-toggle-off-knob-bg: #0d0d11;
+  --cc-cookie-category-block-bg: #15151a;
+  --cc-cookie-category-block-border: rgba(255,255,255,0.08);
+  --cc-cookie-category-block-hover-bg: #1c1c22;
+  --cc-cookie-category-block-hover-border: rgba(0,255,102,0.3);
+  --cc-cookie-category-expanded-block-bg: #15151a;
+  --cc-cookie-category-expanded-block-hover-bg: #1c1c22;
+  --cc-separator-border-color: rgba(255,255,255,0.08);
+  --cc-footer-border-color: rgba(255,255,255,0.08);
+  --cc-footer-bg: #050505;
+  --cc-footer-color: #6b7280;
+  --cc-footer-link-color: #00ff66;
+  --cc-overlay-bg: rgba(5,5,5,0.85);
+  --cc-modal-border-radius: 0;
+  --cc-btn-border-radius: 8px;
+}
+#cc-main .cm-wrapper { width: 100%; max-width: 100%; }
+#cc-main #cm { width: 100%; max-width: 100%; margin: 0; border-radius: 0; }
+#cc-main #cm .cm__body { max-width: 1200px; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+#cc-main .cm__btn[data-role="show"] .cc-prefs-icon { display: none; }
+#cc-main .cm__btn[data-role="show"] .cc-prefs-label { display: inline; }
+#cc-main .cc-sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+@media screen and (max-width: 640px) {
+  #cc-main #cm .cm__body { padding-left: 14px; padding-right: 14px; }
+  #cc-main .cm__texts { padding-top: 0.65rem !important; padding-bottom: 0.35rem !important; }
+  #cc-main .cm__title { font-size: 0.95rem !important; margin-bottom: 0.25rem !important; }
+  #cc-main .cm__desc { font-size: 0.75rem !important; line-height: 1.35 !important; margin: 0 !important; }
+  #cc-main .cm__btns, #cc-main .cm__links { padding: 0.65rem 0.9rem !important; }
+  #cc-main .cm__btns { flex-direction: row !important; align-items: stretch !important; gap: 0.35rem; }
+  #cc-main .cm__btn-group {
+    display: flex !important; flex-direction: row !important; flex: 1 1 auto; gap: 0.35rem; min-width: 0 !important;
+  }
+  #cc-main .cm__btn + .cm__btn, #cc-main .cm__btn-group + .cm__btn-group { margin: 0 !important; }
+  #cc-main .cm--flip .cm__btn + .cm__btn, #cc-main .cm--flip .cm__btn-group + .cm__btn-group { margin: 0 !important; }
+  #cc-main .cm__btn { flex: 1 1 0 !important; min-width: 0 !important; min-height: 36px; padding: 0.35em 0.5em; font-size: 0.72em; }
+  #cc-main .cm__btn-group:has([data-role="show"]) { flex: 0 0 auto; }
+  #cc-main .cm__btn[data-role="show"] {
+    flex: 0 0 auto !important; width: 36px; min-width: 36px !important; padding: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  #cc-main .cm__btn[data-role="show"] .cc-prefs-label { display: none; }
+  #cc-main .cm__btn[data-role="show"] .cc-prefs-icon { display: block; width: 16px; height: 16px; }
+  #cc-main .cm__footer { padding-top: 0.35rem !important; padding-bottom: 0.5rem !important; }
+  #cc-main .cm__links { font-size: 0.7rem; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes orbDrift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(12px, -10px) scale(1.05); }
+}
+.anim-fade { animation: fadeUp 0.7s ease both; }
+.anim-fade-delay { animation: fadeUp 0.7s ease 0.12s both; }
+.anim-fade-delay-2 { animation: fadeUp 0.7s ease 0.24s both; }
+
+body {
+  background-image:
+    linear-gradient(180deg, rgba(0,255,102,0.03) 0%, transparent 35%),
+    radial-gradient(circle at bottom center, rgba(0,255,102,0.06), transparent 50%);
+}
+.page {
+  min-height: 100dvh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 48px 24px 80px; text-align: center; position: relative;
+}
+.content { position: relative; z-index: 1; max-width: 640px; width: 100%; }
+.headline {
+  font-family: 'Unbounded', sans-serif; font-weight: 800;
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  line-height: 1.08; letter-spacing: -0.03em; margin: 0 0 12px; color: #fff;
+}
+.underline {
+  width: 72px; height: 3px; background: #00ff66; margin: 0 auto 24px;
+  border-radius: 2px; box-shadow: 0 0 16px rgba(0,255,102,0.5);
+}
+.desc {
+  font-size: clamp(1rem, 2.4vw, 1.15rem); line-height: 1.65; color: #a1a8b3;
+  margin: 0 auto 36px; max-width: 38ch;
+}
+.cta {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 15px;
+  text-transform: uppercase; letter-spacing: 0.12em; text-decoration: none;
+  color: #000; background: #00ff66; padding: 18px 40px; border-radius: 16px;
+  box-shadow: 0 0 34px rgba(0,255,102,0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  width: min(100%, 320px);
+}
+.cta:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 52px rgba(0,255,102,0.7);
+}
+@media (max-width: 640px) {
+  .cta { width: 100%; border-radius: 14px; }
+}
+.site-footer {
+  position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; z-index: 2;
+}
+.site-footer p { margin: 0; color: #4b5563; font-size: 10px; }
+
+  </style>
+</head>
+<body>
+
+  <div class="page">
+    <main class="content">
+      <h1 class="headline anim-fade">Ready to learn properly?</h1>
+      <div class="underline anim-fade" aria-hidden="true"></div>
+      <p class="desc anim-fade-delay">A free learning space with clear materials and a supportive community.</p>
+      <a tracker target="_blank" rel="noopener noreferrer" class="cta anim-fade-delay-2">Open access</a>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <a href="#privacy-policy" class="js-open-privacy footer-legal-link">Privacy Policy</a>
+        ·
+        <button type="button" class="footer-cookie-btn" data-cc="show-preferencesModal">Cookie settings</button>
+      </p>
+    </footer>
+
+  </div>
+
+
+    <div id="privacyModal" class="privacy-modal" hidden
+         role="dialog" aria-modal="true" aria-labelledby="privacy-title" aria-hidden="true">
+        <div class="privacy-modal__backdrop" data-close-privacy aria-hidden="true"></div>
+        <div class="privacy-modal__panel">
+            <header class="privacy-modal__header">
+                <h2 class="privacy-modal__title" id="privacy-title">Privacy Policy</h2>
+                <button type="button" class="privacy-modal__close" data-close-privacy aria-label="Close privacy policy">&times;</button>
+            </header>
+            <div class="privacy-modal__body">
+                <p class="privacy-modal__meta">Last updated: August 14, 2026</p>
+                <p>This community ("we", "us", "our") respects your privacy. This policy explains what information we collect when you visit this website, how we use it, and the choices you have.</p>
+
+                <h3>1. Who we are</h3>
+                <p>This website is an informational landing page for an educational trading community. It directs visitors to community access channels for learning materials and discussion.</p>
+
+                <h3>2. Information we collect</h3>
+                <p>We may collect limited information when you use this site:</p>
+                <ul>
+                    <li><strong>Technical data</strong> — browser type, device type, approximate location (country/region), pages visited, and referral source.</li>
+                    <li><strong>Cookie data</strong> — preferences you save in our cookie banner (e.g. analytics consent).</li>
+                    <li><strong>Communications</strong> — if you contact us via a messaging app or email, we receive the information you choose to send.</li>
+                </ul>
+                <p>We do not collect payment card details on this website.</p>
+
+                <h3>3. How we use your information</h3>
+                <ul>
+                    <li>Operate and secure the website.</li>
+                    <li>Remember your cookie preferences.</li>
+                    <li>Measure site usage in aggregate (only if you accept analytics cookies).</li>
+                    <li>Respond to enquiries and support requests.</li>
+                    <li>Improve our content and user experience.</li>
+                </ul>
+
+                <h3>4. Cookies</h3>
+                <p>We use strictly necessary cookies to remember your consent choices. Optional analytics cookies are only set if you accept them. You can change your preferences at any time using the <button type="button" class="footer-cookie-btn" data-open-cookie-settings>Cookie settings</button> link in the footer.</p>
+
+                <h3>5. Third-party services</h3>
+                <p>This site may link to external services, including:</p>
+                <ul>
+                    <li><strong>Messaging platforms</strong> — when you join a community channel, that platform's privacy policy applies.</li>
+                    <li><strong>Analytics providers</strong> — only loaded if you consent to analytics cookies.</li>
+                    <li><strong>Content delivery (CDN)</strong> — fonts and scripts may be served from third-party hosts.</li>
+                </ul>
+                <p>We do not sell your personal data to third parties.</p>
+
+                <h3>6. Legal basis (EEA/UK visitors)</h3>
+                <p>Where applicable, we process data based on: your consent (analytics cookies), our legitimate interest in operating and improving the site, and compliance with legal obligations.</p>
+
+                <h3>7. Data retention</h3>
+                <p>Cookie consent records are stored for up to 6 months. Analytics data, if enabled, is retained according to the analytics provider's settings. Correspondence is kept only as long as needed to handle your request.</p>
+
+                <h3>8. Your rights</h3>
+                <p>Depending on your location, you may have the right to access, correct, delete, or restrict processing of your personal data, withdraw consent, or lodge a complaint with a supervisory authority. To exercise these rights, contact us through the community channel linked from this page.</p>
+
+                <h3>9. Children</h3>
+                <p>This website is not directed at anyone under 18. We do not knowingly collect data from minors.</p>
+
+                <h3>10. Changes to this policy</h3>
+                <p>We may update this policy from time to time. The "Last updated" date at the top will reflect any changes. Continued use of the site after updates constitutes acceptance of the revised policy.</p>
+
+                <h3>11. Contact</h3>
+                <p>Questions about this policy? Reach us through the community channel linked from this page.</p>
+            </div>
+            <footer class="privacy-modal__footer">
+                <button type="button" class="btn-secondary" data-open-cookie-settings>Cookie settings</button>
+                <button type="button" class="btn-primary" data-close-privacy>Close</button>
+            </footer>
+        </div>
+    </div>
+
+
+<script>
+(function () {
+    function initTracker() {
+        window.addEventListener('message', function (event) {
+            var data = event.data;
+            if (!data || !data.action) return;
+            var items = document.querySelectorAll('[tracker]');
+            items.forEach(function (item) {
+                item.onclick = function (e) {
+                    e.preventDefault();
+                    event.source.postMessage(
+                        { action: 'click', buttonId: data.buttonId, text: item.innerText },
+                        event.origin
+                    );
+                };
+            });
+        });
+    }
+
+    function initPrivacyModal() {
+        var privacyModal = document.getElementById('privacyModal');
+        var privacyTrigger = null;
+        if (!privacyModal) return;
+
+        function openPrivacyModal(trigger) {
+            privacyTrigger = trigger || null;
+            privacyModal.hidden = false;
+            privacyModal.removeAttribute('aria-hidden');
+            document.body.style.overflow = 'hidden';
+            var closeBtn = privacyModal.querySelector('.privacy-modal__close');
+            if (closeBtn) closeBtn.focus();
+        }
+
+        function closePrivacyModal() {
+            if (privacyModal.hidden) return;
+            privacyModal.hidden = true;
+            privacyModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            if (privacyTrigger && typeof privacyTrigger.focus === 'function') privacyTrigger.focus();
+            privacyTrigger = null;
+        }
+
+        function openCookieSettings() {
+            closePrivacyModal();
+            var prefsBtn = document.querySelector('[data-cc="show-preferencesModal"]');
+            if (prefsBtn) prefsBtn.click();
+        }
+
+        document.addEventListener('click', function (e) {
+            var openLink = e.target.closest('.js-open-privacy, a[href="#privacy-policy"]');
+            if (openLink) {
+                e.preventDefault();
+                openPrivacyModal(openLink);
+                if (window.location.hash === '#privacy-policy') {
+                    history.replaceState(null, '', window.location.pathname + window.location.search);
+                }
+                return;
+            }
+            if (e.target.closest('[data-close-privacy]')) {
+                closePrivacyModal();
+                return;
+            }
+            if (e.target.closest('[data-open-cookie-settings]')) {
+                e.preventDefault();
+                openCookieSettings();
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !privacyModal.hidden) closePrivacyModal();
+        });
+
+        if (window.location.hash === '#privacy-policy') {
+            openPrivacyModal();
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+
+        window.addEventListener('hashchange', function () {
+            if (window.location.hash === '#privacy-policy') {
+                openPrivacyModal();
+                history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        initTracker();
+        initPrivacyModal();
+    });
+})();
+</script>
+<script type="module">
+  import 'https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.umd.js';
+  document.documentElement.classList.add('cc--darkmode');
+  CookieConsent.run({
+    mode: 'opt-in',
+    revision: 1,
+    cookie: { name: 'glads_cc', expiresAfterDays: 182 },
+    guiOptions: {
+      consentModal: { layout: 'bar', position: 'bottom', equalWeightButtons: true, flipButtons: false },
+      preferencesModal: { layout: 'box', equalWeightButtons: true, flipButtons: false }
+    },
+    categories: {
+      necessary: { enabled: true, readOnly: true },
+      analytics: {}
+    },
+    language: {
+      default: 'en',
+      translations: {
+        en: {
+          consentModal: {
+            title: 'We value your privacy',
+            description: 'We use cookies to run this site and, if you allow, for analytics.',
+            acceptAllBtn: 'Accept',
+            acceptNecessaryBtn: 'Reject',
+            showPreferencesBtn: `<span class="cc-sr-only">Manage preferences</span><span class="cc-prefs-label">Manage preferences</span><svg class="cc-prefs-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>`,
+            footer: `<a href="#privacy-policy" class="js-open-privacy">Privacy Policy</a>`
+          },
+          preferencesModal: {
+            title: 'Cookie preferences',
+            acceptAllBtn: 'Accept all',
+            acceptNecessaryBtn: 'Reject all',
+            savePreferencesBtn: 'Save preferences',
+            closeIconLabel: 'Close',
+            sections: [
+              { title: 'Your privacy choices', description: 'You can change these settings at any time using the Cookie settings link in the footer.' },
+              { title: 'Strictly necessary', description: 'Required for basic site functionality and to remember your cookie choices.', linkedCategory: 'necessary' },
+              { title: 'Analytics', description: 'Help us understand how visitors use the site. Data is used in aggregate and not sold.', linkedCategory: 'analytics' },
+              { title: 'More information', description: 'Read our <a href="#privacy-policy" class="js-open-privacy">Privacy Policy</a> for details on how we handle data.' }
+            ]
+          }
+        }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

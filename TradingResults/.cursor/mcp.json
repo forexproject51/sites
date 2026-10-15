@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "mcp-gsheets": {
+      "command": "/opt/homebrew/bin/node",
+      "args": [
+        "/Users/viktorokoncuk/.cursor/mcp-servers/mcp-gsheets/dist/index.js"
+      ],
+      "env": {
+        "GOOGLE_PROJECT_ID": "mcpserverapis",
+        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/viktorokoncuk/Projects/Cursor/Creds/mcpserverapis-f431c9bcf439.json"
+      }
+    }
+  }
+}
